@@ -41,7 +41,7 @@ webAppHtml appConfig database = do
                                 td_ [class_ "centreAlign"] $
                                     div_ [class_ "shoppingListCheckbox"] $ do
                                         let checkboxId = pack $ printf "cb%d" (itemId item)
-                                        input_ [type_ "checkbox", id_ checkboxId]
+                                        input_ ([type_ "checkbox", id_ checkboxId] ++ [checked_ | itemIsFinished item])
                                         label_ [for_ checkboxId] ""
                                 td_ [class_ "leftAlign"] (toHtml $ itemName item)
                                 td_ [class_ "centreAlign"] (toHtml $ show $ itemAmount item)

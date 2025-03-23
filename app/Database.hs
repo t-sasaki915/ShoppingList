@@ -23,11 +23,12 @@ instance Localisable ItemPriority where
     localise Low Japanese    = "低"
 
 data ItemField = ItemField
-    { itemId       :: Int
-    , itemName     :: String
-    , itemAmount   :: Int
-    , itemPriority :: ItemPriority
-    , itemNotes    :: Maybe String
+    { itemId         :: Int
+    , itemName       :: String
+    , itemAmount     :: Int
+    , itemPriority   :: ItemPriority
+    , itemNotes      :: Maybe String
+    , itemIsFinished :: Bool
     }
     deriving Show
 
@@ -38,7 +39,7 @@ instance FromField ItemPriority where
     fromField (Field x _)                  = fail (printf "Unrecognisable priority: '%s'" (show x))
 
 instance FromRow ItemField where
-    fromRow = ItemField <$> field <*> field <*> field <*> field <*> field
+    fromRow = ItemField <$> field <*> field <*> field <*> field <*> field <*> field
 
 getAllItems :: Connection -> IO [ItemField]
 getAllItems = flip query_ "SELECT * FROM shopping_list"

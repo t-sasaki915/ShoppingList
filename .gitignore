@@ -22,4 +22,7 @@ cabal.project.local~
 .HTF/
 .ghc.environment.*
 
+config.yaml
+database.db
+
 test.html

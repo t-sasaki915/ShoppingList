@@ -26,5 +26,5 @@ webAppHtml appConfig = do
                             th_ (toHtml $ finishedLabel language)
                             th_ (toHtml $ nameLabel language)
                             th_ (toHtml $ amountLabel language)
-                            th_ (toHtml $ importanceLabel language)
+                            th_ (toHtml $ priorityLabel language)
                             th_ (toHtml $ notesLabel language)

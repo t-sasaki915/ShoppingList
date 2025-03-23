@@ -17,9 +17,9 @@ readConfigFile filePath =
             putStrLn $ printf "Acquired '%s' as the configuration." filePath
             BS.readFile filePath
         False -> do
-            putStrLn $ printf "Could not find '%s'. Using default configurations." filePath
+            putStrLn $ printf "Could not find '%s'. Creating..." filePath
             writeDefaultConfigFile filePath
-            return defaultConfigFile
+            readConfigFile filePath
 
 loadConfig :: FilePath -> IO AppConfig
 loadConfig filePath = do

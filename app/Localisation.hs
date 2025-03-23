@@ -6,7 +6,7 @@ module Localisation
     , finishedLabel
     , nameLabel
     , amountLabel
-    , importanceLabel
+    , priorityLabel
     , notesLabel
     ) where
 
@@ -47,9 +47,9 @@ amountLabel :: Language -> Text
 amountLabel English  = "Amount"
 amountLabel Japanese = "個数"
 
-importanceLabel :: Language -> Text
-importanceLabel English  = "Importance"
-importanceLabel Japanese = "重要性"
+priorityLabel :: Language -> Text
+priorityLabel English  = "Importance"
+priorityLabel Japanese = "重要性"
 
 notesLabel :: Language -> Text
 notesLabel English  = "Notes"

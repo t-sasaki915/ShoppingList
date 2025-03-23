@@ -11,7 +11,7 @@ import           Data.FileEmbed  (embedFile)
 import           Localisation    (Language (English))
 
 defaultConfigFile :: ByteString
-defaultConfigFile = $(embedFile "config.yaml")
+defaultConfigFile = $(embedFile "defaultConfig.yaml")
 
 defaultServerPort :: Int
 defaultServerPort = 8080

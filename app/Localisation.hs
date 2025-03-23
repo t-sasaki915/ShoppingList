@@ -1,8 +1,10 @@
 module Localisation
     ( Language (..)
+    , htmlLanguageCode
     , appTitle
     ) where
 
+import           Data.Text   (Text)
 import           Data.Yaml   (FromJSON (..), Value (..))
 import           Text.Printf (printf)
 
@@ -15,6 +17,10 @@ instance FromJSON Language where
     parseJSON (String "Japanese") = pure Japanese
     parseJSON x                   = fail (printf "Unrecognisable language '%s'." (show x))
 
-appTitle :: Language -> String
+htmlLanguageCode :: Language -> Text
+htmlLanguageCode English  = "en"
+htmlLanguageCode Japanese = "ja"
+
+appTitle :: Language -> Text
 appTitle English  = "ShoppingList"
 appTitle Japanese = "買い物リスト"

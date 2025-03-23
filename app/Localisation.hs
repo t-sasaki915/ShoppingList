@@ -1,6 +1,7 @@
-{-# OPTIONS_GHC -Wno-missing-export-lists #-}
-
-module Localisation where
+module Localisation
+    ( Language (..)
+    , appTitle
+    ) where
 
 import           Data.Yaml   (FromJSON (..), Value (..))
 import           Text.Printf (printf)

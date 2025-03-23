@@ -1,11 +1,27 @@
 module Main (main) where
 
+import           Config.AppConfig         (AppConfig (..))
+import           Config.Loader            (loadConfig)
+import qualified Network.HTTP.Types       as HTypes
+import qualified Network.Wai              as Wai
 import qualified Network.Wai.Handler.Warp as Warp
-import qualified Network.Wai as Wai
-import qualified Network.HTTP.Types as HTypes
+import           Text.Printf              (printf)
 
 main :: IO ()
-main = Warp.run 8080 webServer
+main = do
+    appConfig <- loadConfig "config.yaml"
 
-webServer :: Wai.Application
-webServer req send = send $ Wai.responseBuilder HTypes.status200 [] "aaaa"
+    putStrLn $ printf "The web server is listening to %d." (serverPort appConfig)
+    Warp.run (serverPort appConfig) router
+
+router :: Wai.Application
+router req =
+    case Wai.pathInfo req of
+        [] -> indexApp req
+        _  -> notFoundApp req
+
+indexApp :: Wai.Application
+indexApp req send = send $ Wai.responseBuilder HTypes.status200 [] "aaaa"
+
+notFoundApp :: Wai.Application
+notFoundApp _ send = send $ Wai.responseBuilder HTypes.status404 [] "Not Found."

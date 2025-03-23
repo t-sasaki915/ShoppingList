@@ -1,11 +1,11 @@
-module Config.Loader (loadConfig) where
+module AppConfig.Loader (loadConfig) where
 
-import           Config.AppConfig (AppConfig)
-import           Config.Resource  (defaultConfigFile)
-import qualified Data.ByteString  as BS
-import           Data.Yaml        (decodeEither', prettyPrintParseException)
-import           System.Directory (doesFileExist)
-import           Text.Printf      (printf)
+import           AppConfig          (AppConfig)
+import           AppConfig.Resource (defaultConfigFile)
+import qualified Data.ByteString    as BS
+import           Data.Yaml          (decodeEither', prettyPrintParseException)
+import           System.Directory   (doesFileExist)
+import           Text.Printf        (printf)
 
 writeDefaultConfigFile :: FilePath -> IO ()
 writeDefaultConfigFile = flip BS.writeFile defaultConfigFile

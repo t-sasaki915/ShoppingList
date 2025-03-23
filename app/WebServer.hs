@@ -1,8 +1,8 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module WebServer.WebServer (startWebServer) where
+module WebServer (startWebServer) where
 
-import           Config.AppConfig         (AppConfig (serverPort))
+import           AppConfig                (AppConfig (serverPort))
 import           Data.ByteString.Builder  (byteString)
 import           Data.FileEmbed           (embedFile)
 import qualified Network.HTTP.Types       as HTypes

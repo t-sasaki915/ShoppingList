@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Config.Resource
+module AppConfig.Resource
     ( defaultConfigFile
     , defaultServerPort
     ) where

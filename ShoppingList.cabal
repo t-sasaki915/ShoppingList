@@ -36,10 +36,10 @@ executable ShoppingList-exe
   main-is: Main.hs
   other-modules:
       Paths_ShoppingList
-      Config.AppConfig
-      Config.Loader
-      Config.Resource
-      WebServer.WebServer
+      AppConfig.Loader
+      AppConfig.Resource
+      AppConfig
+      WebServer
   autogen-modules:
       Paths_ShoppingList
   hs-source-dirs:

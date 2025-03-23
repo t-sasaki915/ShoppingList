@@ -1,9 +1,9 @@
-module Config.AppConfig
+module AppConfig
     ( AppConfig(..)
     , defaultAppConfig
     ) where
 
-import qualified Config.Resource as Res
+import qualified AppConfig.Resource as Res
 import           Data.Yaml
 
 newtype AppConfig = AppConfig

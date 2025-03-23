@@ -1,10 +1,10 @@
 module Main (main) where
 
-import           Config.Loader       (loadConfig)
-import           Data.Version        (showVersion)
-import           Paths_ShoppingList  (version)
-import           Text.Printf         (printf)
-import           WebServer.WebServer (startWebServer)
+import           AppConfig.Loader   (loadConfig)
+import           Data.Version       (showVersion)
+import           Paths_ShoppingList (version)
+import           Text.Printf        (printf)
+import           WebServer          (startWebServer)
 
 main :: IO ()
 main = do

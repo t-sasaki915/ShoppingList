@@ -20,3 +20,11 @@ webAppHtml appConfig = do
                 div_ [class_ "mainAppHeader"] $ do
                     span_ [class_ "mainAppHeaderText"] (toHtml $ appTitle language)
                     a_ [class_ "button", href_ "/edit", style_ "float: right;"] (toHtml $ editButtonLabel language)
+                div_ [class_ "shoppingList"] $
+                    table_ [] $ do
+                        tr_ [] $ do
+                            th_ (toHtml $ finishedLabel language)
+                            th_ (toHtml $ nameLabel language)
+                            th_ (toHtml $ amountLabel language)
+                            th_ (toHtml $ importanceLabel language)
+                            th_ (toHtml $ notesLabel language)

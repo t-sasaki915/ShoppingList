@@ -39,6 +39,7 @@ executable ShoppingList-exe
       Config.AppConfig
       Config.Loader
       Config.Resource
+      WebServer.WebServer
   autogen-modules:
       Paths_ShoppingList
   hs-source-dirs:

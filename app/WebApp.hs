@@ -1,8 +1,10 @@
 module WebApp (webAppHtml) where
 
-import           AppConfig    (AppConfig (..))
+import           AppConfig          (AppConfig (..))
+import           Data.Version       (showVersion)
 import           Localisation
 import           Lucid
+import           Paths_ShoppingList (version)
 
 webAppHtml :: AppConfig -> IO (Html ())
 webAppHtml appConfig = do
@@ -17,4 +19,8 @@ webAppHtml appConfig = do
                 meta_ [name_ "viewport", content_ "width=device-width,initial-scale=1"]
                 link_ [rel_ "stylesheet", href_ "style.css"]
             body_ $ do
-                p_ "HELLO"
+                div_ [class_ "mainAppHeader"] $ do
+                    span_ [class_ "mainAppHeaderText"] (toHtml $ appTitle language)
+                    span_ [class_ "mainAppHeaderText"] (toHtml $ versionLabel language)
+                    span_ [class_ "mainAppHeaderText"] (toHtml $ showVersion version)
+                    a_ [class_ "button", href_ "/edit", style_ "float: right;"] (toHtml $ editButtonLabel language)

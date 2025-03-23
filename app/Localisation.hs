@@ -1,5 +1,6 @@
 module Localisation
     ( Language (..)
+    , Localisable (..)
     , htmlLanguageCode
     , appTitle
     , editButtonLabel
@@ -22,6 +23,9 @@ instance FromJSON Language where
     parseJSON (String "English")  = pure English
     parseJSON (String "Japanese") = pure Japanese
     parseJSON x                   = fail (printf "Unrecognisable language '%s'." (show x))
+
+class Localisable a where
+    localise :: a -> Language -> Text
 
 htmlLanguageCode :: Language -> Text
 htmlLanguageCode English  = "en"

@@ -1,12 +1,20 @@
 module WebApp (webAppHtml) where
 
-import           AppConfig    (AppConfig (..))
+import           AppConfig              (AppConfig (..))
+import           Control.Monad          (forM_)
+import           Data.Maybe             (fromMaybe)
+import           Data.Text              (pack)
+import           Database               (ItemField (..), getAllItems)
+import           Database.SQLite.Simple (Connection)
 import           Localisation
 import           Lucid
+import           Text.Printf            (printf)
 
-webAppHtml :: AppConfig -> IO (Html ())
-webAppHtml appConfig = do
+webAppHtml :: AppConfig -> Connection -> IO (Html ())
+webAppHtml appConfig database = do
     let language = webInterfaceLanguage appConfig
+
+    items <- getAllItems database
 
     return $ do
         doctype_
@@ -28,3 +36,14 @@ webAppHtml appConfig = do
                             th_ (toHtml $ amountLabel language)
                             th_ (toHtml $ priorityLabel language)
                             th_ (toHtml $ notesLabel language)
+                        forM_ items $ \item ->
+                            tr_ [] $ do
+                                td_ [class_ "centreAlign"] $
+                                    div_ [class_ "shoppingListCheckbox"] $ do
+                                        let checkboxId = pack $ printf "cb%d" (itemId item)
+                                        input_ [type_ "checkbox", id_ checkboxId]
+                                        label_ [for_ checkboxId] ""
+                                td_ [class_ "leftAlign"] (toHtml $ itemName item)
+                                td_ [class_ "centreAlign"] (toHtml $ show $ itemAmount item)
+                                td_ [class_ "centreAlign"] (toHtml $ localise (itemPriority item) language)
+                                td_ [class_ "leftAlign"] (toHtml $ fromMaybe "-" (itemNotes item))

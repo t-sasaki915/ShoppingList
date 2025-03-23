@@ -5,6 +5,7 @@ module WebServer (startWebServer) where
 import           AppConfig                (AppConfig (serverPort))
 import           Data.ByteString.Builder  (byteString, lazyByteString)
 import           Data.FileEmbed           (embedFile)
+import           Database.SQLite.Simple   (Connection)
 import           Lucid                    (renderBS)
 import qualified Network.HTTP.Types       as HTypes
 import qualified Network.Wai              as Wai
@@ -12,22 +13,22 @@ import qualified Network.Wai.Handler.Warp as Warp
 import           Text.Printf              (printf)
 import           WebApp                   (webAppHtml)
 
-startWebServer :: AppConfig -> IO ()
-startWebServer appConfig = do
+startWebServer :: AppConfig -> Connection -> IO ()
+startWebServer appConfig database = do
     let port = serverPort appConfig
     putStrLn $ printf "The web server is listening to %d." port
-    Warp.run port (router appConfig)
+    Warp.run port (router appConfig database)
 
-router :: AppConfig -> Wai.Application
-router appConfig req =
+router :: AppConfig -> Connection -> Wai.Application
+router appConfig database req =
     case Wai.pathInfo req of
-        []            -> mainApp appConfig req
+        []            -> mainApp appConfig database req
         ["style.css"] -> styleSheetApp req
         _             -> notFoundApp req
 
-mainApp :: AppConfig -> Wai.Application
-mainApp appConfig _ send = do
-    webApp <- webAppHtml appConfig
+mainApp :: AppConfig -> Connection -> Wai.Application
+mainApp appConfig database _ send = do
+    webApp <- webAppHtml appConfig database
     send $ Wai.responseBuilder HTypes.status200 [] (lazyByteString $ renderBS webApp)
 
 styleSheetApp :: Wai.Application

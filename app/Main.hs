@@ -14,4 +14,4 @@ main = do
     appConfig <- loadConfig "config.yaml"
     database  <- initialiseDatabase "database.db"
 
-    startWebServer appConfig
+    startWebServer appConfig database

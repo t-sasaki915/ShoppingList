@@ -5,7 +5,7 @@ module Database
     ) where
 
 import           Database.SQLite.Simple
-import           Database.SQLite.Simple.FromField
+import           Database.SQLite.Simple.FromField (FromField (..))
 import           Database.SQLite.Simple.Internal  (Field (..))
 import           Localisation                     (Language (..),
                                                    Localisable (..))

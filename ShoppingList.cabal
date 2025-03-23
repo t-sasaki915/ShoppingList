@@ -40,10 +40,10 @@ executable ShoppingList-exe
       AppConfig.Resource
       Database.Initialiser
       Database.Resource
+      WebApps.MainApp
       AppConfig
       Database
       Localisation
-      MainApp
       WebServer
   autogen-modules:
       Paths_ShoppingList

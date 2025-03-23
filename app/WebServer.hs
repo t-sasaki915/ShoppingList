@@ -7,11 +7,11 @@ import           Data.ByteString.Builder  (byteString, lazyByteString)
 import           Data.FileEmbed           (embedFile)
 import           Database.SQLite.Simple   (Connection)
 import           Lucid                    (renderBS)
-import           MainApp                  (mainAppHtml)
 import qualified Network.HTTP.Types       as HTypes
 import qualified Network.Wai              as Wai
 import qualified Network.Wai.Handler.Warp as Warp
 import           Text.Printf              (printf)
+import           WebApps.MainApp          (mainAppHtml)
 
 startWebServer :: AppConfig -> Connection -> IO ()
 startWebServer appConfig database = do

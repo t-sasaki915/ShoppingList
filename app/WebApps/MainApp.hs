@@ -1,4 +1,4 @@
-module MainApp (mainAppHtml) where
+module WebApps.MainApp (mainAppHtml) where
 
 import           AppConfig              (AppConfig (..))
 import           Control.Monad          (forM_)

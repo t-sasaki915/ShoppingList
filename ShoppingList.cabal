@@ -39,6 +39,7 @@ executable ShoppingList-exe
       AppConfig.Loader
       AppConfig.Resource
       AppConfig
+      Localisation
       WebServer
   autogen-modules:
       Paths_ShoppingList

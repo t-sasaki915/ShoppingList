@@ -1,0 +1,65 @@
+cabal-version: 2.2
+
+name:           ShoppingList
+version:        1.0.0.0
+description:    Please see the README on GitHub at <https://github.com/t-sasaki915/ShoppingList#readme>
+homepage:       https://github.com/t-sasaki915/ShoppingList#readme
+bug-reports:    https://github.com/t-sasaki915/ShoppingList/issues
+author:         Toma Sasaki
+maintainer:     netst915@gmail.com
+copyright:      2025 Toma Sasaki
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/t-sasaki915/ShoppingList
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_ShoppingList
+  autogen-modules:
+      Paths_ShoppingList
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+  default-extensions: LambdaCase
+
+executable ShoppingList-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_ShoppingList
+  autogen-modules:
+      Paths_ShoppingList
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      ShoppingList
+    , base >=4.7 && <5
+  default-language: Haskell2010
+  default-extensions: LambdaCase
+
+test-suite ShoppingList-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_ShoppingList
+  autogen-modules:
+      Paths_ShoppingList
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      ShoppingList
+    , base >=4.7 && <5
+  default-language: Haskell2010
+  default-extensions: LambdaCase

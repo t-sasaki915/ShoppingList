@@ -1,7 +1,11 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Main (main) where
 
 import           Config.AppConfig         (AppConfig (..))
 import           Config.Loader            (loadConfig)
+import           Data.ByteString.Builder  (byteString)
+import           Data.FileEmbed           (embedFile)
 import           Data.Version             (showVersion)
 import qualified Network.HTTP.Types       as HTypes
 import qualified Network.Wai              as Wai
@@ -21,11 +25,16 @@ main = do
 router :: Wai.Application
 router req =
     case Wai.pathInfo req of
-        [] -> indexApp req
-        _  -> notFoundApp req
+        []            -> indexApp req
+        ["style.css"] -> styleSheetApp req
+        _             -> notFoundApp req
 
 indexApp :: Wai.Application
-indexApp req send = send $ Wai.responseBuilder HTypes.status200 [] "aaaa"
+indexApp req send = send $ Wai.responseBuilder HTypes.status200 [] "<html><head><link rel=\"stylesheet\" href=\"style.css\"></head><body>aaa</body></html>"
+
+styleSheetApp :: Wai.Application
+styleSheetApp _ send =
+    send $ Wai.responseBuilder HTypes.status200 [] (byteString $(embedFile "style.css"))
 
 notFoundApp :: Wai.Application
 notFoundApp _ send = send $ Wai.responseBuilder HTypes.status404 [] "Not Found."

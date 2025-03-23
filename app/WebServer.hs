@@ -7,11 +7,11 @@ import           Data.ByteString.Builder  (byteString, lazyByteString)
 import           Data.FileEmbed           (embedFile)
 import           Database.SQLite.Simple   (Connection)
 import           Lucid                    (renderBS)
+import           MainApp                  (mainAppHtml)
 import qualified Network.HTTP.Types       as HTypes
 import qualified Network.Wai              as Wai
 import qualified Network.Wai.Handler.Warp as Warp
 import           Text.Printf              (printf)
-import           WebApp                   (webAppHtml)
 
 startWebServer :: AppConfig -> Connection -> IO ()
 startWebServer appConfig database = do
@@ -28,8 +28,8 @@ router appConfig database req =
 
 mainApp :: AppConfig -> Connection -> Wai.Application
 mainApp appConfig database _ send = do
-    webApp <- webAppHtml appConfig database
-    send $ Wai.responseBuilder HTypes.status200 [] (lazyByteString $ renderBS webApp)
+    appHtml <- mainAppHtml appConfig database
+    send $ Wai.responseBuilder HTypes.status200 [] (lazyByteString $ renderBS appHtml)
 
 styleSheetApp :: Wai.Application
 styleSheetApp _ send =

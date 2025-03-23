@@ -43,7 +43,7 @@ executable ShoppingList-exe
       AppConfig
       Database
       Localisation
-      WebApp
+      MainApp
       WebServer
   autogen-modules:
       Paths_ShoppingList

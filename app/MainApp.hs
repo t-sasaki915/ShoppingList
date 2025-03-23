@@ -1,4 +1,4 @@
-module WebApp (webAppHtml) where
+module MainApp (mainAppHtml) where
 
 import           AppConfig              (AppConfig (..))
 import           Control.Monad          (forM_)
@@ -10,8 +10,8 @@ import           Localisation
 import           Lucid
 import           Text.Printf            (printf)
 
-webAppHtml :: AppConfig -> Connection -> IO (Html ())
-webAppHtml appConfig database = do
+mainAppHtml :: AppConfig -> Connection -> IO (Html ())
+mainAppHtml appConfig database = do
     let language = webInterfaceLanguage appConfig
 
     items <- getAllItems database

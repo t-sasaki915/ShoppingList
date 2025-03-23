@@ -2,7 +2,6 @@ module Localisation
     ( Language (..)
     , htmlLanguageCode
     , appTitle
-    , versionLabel
     , editButtonLabel
     ) where
 
@@ -26,10 +25,6 @@ htmlLanguageCode Japanese = "ja"
 appTitle :: Language -> Text
 appTitle English  = "ShoppingList"
 appTitle Japanese = "買い物リスト"
-
-versionLabel :: Language -> Text
-versionLabel English  = " version "
-versionLabel Japanese = " バージョン "
 
 editButtonLabel :: Language -> Text
 editButtonLabel English  = "Edit"

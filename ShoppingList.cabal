@@ -42,8 +42,10 @@ executable ShoppingList-exe
       Database.Resource
       WebApp.MainApp
       WebApp.ModifyApp
+      WebServer.Resource
       AppConfig
       Database
+      Item
       Localisation
       WebApp
       WebServer

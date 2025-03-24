@@ -1,10 +1,7 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module WebServer (startWebServer) where
 
 import           AppConfig                (AppConfig (serverPort))
 import           Data.ByteString.Builder  (byteString)
-import           Data.FileEmbed           (embedFile)
 import           Database.SQLite.Simple   (Connection)
 import qualified Network.HTTP.Types       as HTypes
 import qualified Network.Wai              as Wai
@@ -12,6 +9,7 @@ import qualified Network.Wai.Handler.Warp as Warp
 import           Text.Printf              (printf)
 import           WebApp.MainApp           (mainApp)
 import           WebApp.ModifyApp         (modifyApp)
+import qualified WebServer.Resource       as Res
 
 startWebServer :: AppConfig -> Connection -> IO ()
 startWebServer appConfig database = do
@@ -29,7 +27,7 @@ router appConfig database req =
 
 styleSheetApp :: Wai.Application
 styleSheetApp _ send =
-    send $ Wai.responseBuilder HTypes.status200 [] (byteString $(embedFile "style.css"))
+    send $ Wai.responseBuilder HTypes.status200 [] (byteString Res.styleSheetFile)
 
 notFoundApp :: Wai.Application
 notFoundApp _ send = send $ Wai.responseBuilder HTypes.status404 [] "NOT FOUND!"

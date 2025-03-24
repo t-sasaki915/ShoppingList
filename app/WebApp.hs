@@ -2,7 +2,7 @@ module WebApp (renderWebApp) where
 
 import           AppConfig       (AppConfig (..))
 import           Data.ByteString (ByteString, toStrict)
-import           Localisation
+import           Localisation    (appTitle, htmlLanguageCode)
 import           Lucid
 
 constructWebApp :: AppConfig -> Html () -> Html ()

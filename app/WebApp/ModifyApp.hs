@@ -10,9 +10,9 @@ import           Data.Text              (Text, unpack)
 import           Data.Text.Encoding     (decodeUtf8Lenient)
 import           Data.Text.Read         (decimal)
 import           Data.Yaml.Internal     (isNumeric)
-import           Database               (ItemPriority (..))
 import qualified Database               as DB
 import           Database.SQLite.Simple (Connection)
+import           Item                   (ItemPriority (..))
 import qualified Network.HTTP.Types     as HTypes
 import           Network.URI            (parseURI)
 import           Network.URI.Encode     as URI

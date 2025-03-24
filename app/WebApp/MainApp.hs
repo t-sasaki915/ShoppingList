@@ -5,8 +5,9 @@ import           Control.Monad           (forM_)
 import           Data.ByteString.Builder (byteString)
 import           Data.Maybe              (fromMaybe)
 import           Data.Text               (pack)
-import           Database                (ItemField (..), getAllItems)
+import           Database                (getAllItems)
 import           Database.SQLite.Simple  (Connection)
+import           Item                    (ItemField (..))
 import           Localisation
 import           Lucid
 import qualified Network.HTTP.Types      as HTypes

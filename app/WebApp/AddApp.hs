@@ -43,10 +43,10 @@ addAppHtml appConfig _ = do
         div_ [class_ "shoppingList"] $
             table_ [] $ do
                 tr_ [] $ do
-                    th_ (toHtml $ nameLabel language)
-                    th_ (toHtml $ amountLabel language)
-                    th_ (toHtml $ priorityLabel language)
-                    th_ (toHtml $ notesLabel language)
+                    th_ [style_ "width: 40%;"] (toHtml $ nameLabel language)
+                    th_ [style_ "width: 15%;"] (toHtml $ amountLabel language)
+                    th_ [style_ "width: 15%;"] (toHtml $ priorityLabel language)
+                    th_ [style_ "width: 30%;"] (toHtml $ notesLabel language)
                 tr_ [] $ do
                     td_ [class_ "leftAlign"] $
                         input_ [type_ "text", value_ "", class_ "itemDataInput", id_ "itemName"]

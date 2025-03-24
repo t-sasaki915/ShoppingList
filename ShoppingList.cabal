@@ -42,6 +42,7 @@ executable ShoppingList-exe
       AppConfig.Resource
       Database.Initialiser
       Database.Resource
+      WebApp.EditApp
       WebApp.MainApp
       WebApp.ModifyApp
       WebServer.Resource

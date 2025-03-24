@@ -4,6 +4,7 @@ module Localisation
     , htmlLanguageCode
     , appTitle
     , editButtonLabel
+    , viewButtonLabel
     , finishedLabel
     , nameLabel
     , amountLabel
@@ -38,6 +39,10 @@ appTitle Japanese = "買い物リスト"
 editButtonLabel :: Language -> Text
 editButtonLabel English  = "Edit"
 editButtonLabel Japanese = "編集"
+
+viewButtonLabel :: Language -> Text
+viewButtonLabel English  = "View"
+viewButtonLabel Japanese = "閲覧"
 
 finishedLabel :: Language -> Text
 finishedLabel English  = "Finished"

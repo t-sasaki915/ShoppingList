@@ -4,6 +4,7 @@ module Localisation
     , htmlLanguageCode
     , appTitle
     , editButtonLabel
+    , manageButtonLabel
     , deleteButtonLabel
     , viewButtonLabel
     , addButtonLabel
@@ -45,6 +46,10 @@ editButtonLabel :: Language -> Text
 editButtonLabel English  = "Edit"
 editButtonLabel Japanese = "編集"
 
+manageButtonLabel :: Language -> Text
+manageButtonLabel English  = "Manage"
+manageButtonLabel Japanese = "管理"
+
 deleteButtonLabel :: Language -> Text
 deleteButtonLabel English  = "Delete"
 deleteButtonLabel Japanese = "削除"
@@ -78,7 +83,7 @@ amountLabel English  = "Amount"
 amountLabel Japanese = "個数"
 
 priorityLabel :: Language -> Text
-priorityLabel English  = "Importance"
+priorityLabel English  = "Priority"
 priorityLabel Japanese = "重要性"
 
 notesLabel :: Language -> Text

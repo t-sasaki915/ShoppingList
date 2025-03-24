@@ -30,16 +30,16 @@ addAppHtml appConfig _ = do
             , "  const isPriorityLow = document.getElementById('priorityLow').selected;"
             , "  const itemNotes = encodeURIComponent(document.getElementById('itemNotes').value);"
             , "  const priorityText = isPriorityHigh ? 'High' : isPriorityNormal ? 'Normal' : isPriorityLow ? 'Low' : '';"
-            , "  const editAppUrl = encodeURIComponent(`${window.location.origin}/edit`);"
+            , "  const manageAppUrl = encodeURIComponent(`${window.location.origin}/manage`);"
             , "  const time = new Date().getTime();"
-            , "  const url = `/modify?op=add&name=${itemName}&amount=${itemAmount}&priority=${priorityText}&notes=${itemNotes}&after=${editAppUrl}&n=${time}`;"
+            , "  const url = `/modify?op=add&name=${itemName}&amount=${itemAmount}&priority=${priorityText}&notes=${itemNotes}&after=${manageAppUrl}&n=${time}`;"
             , "  window.location.replace(url);"
             , "}"
             ]
         div_ [class_ "mainAppHeader"] $ do
             span_ [class_ "mainAppHeaderText"] (toHtml $ appTitle language)
             a_ [class_ "button noVerticalMargin", href_ "#", style_ "float: right;", onclick_ "addItem();"] (toHtml $ doneButtonLabel language)
-            a_ [class_ "button noVerticalMargin", href_ "/edit", style_ "float: right;"] (toHtml $ cancelButtonLabel language)
+            a_ [class_ "button noVerticalMargin", href_ "/manage", style_ "float: right;"] (toHtml $ cancelButtonLabel language)
         div_ [class_ "shoppingList"] $
             table_ [] $ do
                 tr_ [] $ do

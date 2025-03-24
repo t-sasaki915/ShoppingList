@@ -1,4 +1,4 @@
-module WebApp.EditApp (editApp) where
+module WebApp.ManageApp (manageApp) where
 
 import           AppConfig               (AppConfig (..))
 import           Control.Monad           (forM_)
@@ -15,13 +15,13 @@ import qualified Network.Wai             as Wai
 import           Text.Printf             (printf)
 import           WebApp                  (renderWebApp)
 
-editApp :: AppConfig -> Connection -> Wai.Application
-editApp appConfig database _ send = do
-    appHtml <- editAppHtml appConfig database
+manageApp :: AppConfig -> Connection -> Wai.Application
+manageApp appConfig database _ send = do
+    appHtml <- manageAppHtml appConfig database
     send $ Wai.responseBuilder HTypes.status200 [] (byteString $ renderWebApp appConfig appHtml)
 
-editAppHtml :: AppConfig -> Connection -> IO (Html ())
-editAppHtml appConfig database = do
+manageAppHtml :: AppConfig -> Connection -> IO (Html ())
+manageAppHtml appConfig database = do
     let language = webInterfaceLanguage appConfig
 
     items <- getAllItems database

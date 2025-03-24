@@ -2,6 +2,7 @@ module WebApp.AddApp (addApp) where
 
 import           AppConfig               (AppConfig (..))
 import           Data.ByteString.Builder (byteString)
+import           Data.Text               (pack)
 import           Database.SQLite.Simple  (Connection)
 import           Item                    (ItemPriority (..))
 import           Localisation
@@ -20,6 +21,21 @@ addAppHtml appConfig _ = do
     let language = webInterfaceLanguage appConfig
 
     return $ do
+        script_ $ pack $ unlines
+            [ "function addItem() {"
+            , "  const itemName = encodeURIComponent(document.getElementById('itemName').value);"
+            , "  const itemAmount = document.getElementById('itemAmount').value;"
+            , "  const isPriorityHigh = document.getElementById('priorityHigh').selected;"
+            , "  const isPriorityNormal = document.getElementById('priorityNormal').selected;"
+            , "  const isPriorityLow = document.getElementById('priorityLow').selected;"
+            , "  const itemNotes = encodeURIComponent(document.getElementById('itemNotes').value);"
+            , "  const priorityText = isPriorityHigh ? 'High' : isPriorityNormal ? 'Normal' : isPriorityLow ? 'Low' : '';"
+            , "  const editAppUrl = encodeURIComponent(`${window.location.origin}/edit`);"
+            , "  const time = new Date().getTime();"
+            , "  const url = `/modify?op=add&name=${itemName}&amount=${itemAmount}&priority=${priorityText}&notes=${itemNotes}&after=${editAppUrl}&n=${time}`;"
+            , "  window.location.replace(url);"
+            , "}"
+            ]
         div_ [class_ "mainAppHeader"] $ do
             span_ [class_ "mainAppHeaderText"] (toHtml $ appTitle language)
             a_ [class_ "button noVerticalMargin", href_ "#", style_ "float: right;", onclick_ "addItem();"] (toHtml $ doneButtonLabel language)

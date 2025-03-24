@@ -6,6 +6,7 @@ module Database
     , updateItemNotes
     , updateItemIsFinished
     , deleteItem
+    , addItem
     ) where
 
 import           Data.Text              (Text)
@@ -38,3 +39,9 @@ updateItemIsFinished database iid newIsFinished =
 deleteItem :: Connection -> Int -> IO ()
 deleteItem database iid =
     execute database "DELETE FROM shopping_list WHERE id = ?" (Only iid)
+
+addItem :: Connection -> Text -> Int -> ItemPriority -> Text -> IO ()
+addItem database newName newAmount newPriority newNotes =
+    execute database
+        "INSERT INTO shopping_list (name, amount, priority, notes, is_finished) VALUES (?, ?, ?, ?, 0)"
+        (newName, newAmount, newPriority, newNotes)

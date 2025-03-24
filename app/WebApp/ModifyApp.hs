@@ -5,7 +5,7 @@ import           Control.Monad          (forM_)
 import           Data.ByteString        (ByteString)
 import           Data.Functor           ((<&>))
 import qualified Data.Map               as M
-import           Data.Maybe             (fromJust)
+import           Data.Maybe             (fromJust, isNothing)
 import           Data.Text              (Text, unpack)
 import           Data.Text.Encoding     (decodeUtf8Lenient)
 import           Data.Text.TRead        (TRead (..))
@@ -57,6 +57,20 @@ modifyApp _ database req send = do
 
                         _ ->
                             invalidRequest
+
+                Just "add" -> do
+                    let newName = lookup' "name" queryMap <&> URI.decodeText
+                        newAmount = tReadMaybe =<< lookup' "amount" queryMap
+                        newPriority = tReadMaybe =<< lookup' "priority" queryMap
+                        newNotes = lookup' "notes" queryMap <&> URI.decodeText
+
+                    if isNothing newName || isNothing newAmount || isNothing newPriority || isNothing newNotes then
+                        invalidRequest
+
+                    else do
+                        DB.addItem database (fromJust newName) (fromJust newAmount) (fromJust newPriority) (fromJust newNotes)
+
+                        redirect afterUrl
 
                 _ ->
                     invalidRequest

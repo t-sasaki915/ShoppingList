@@ -29,11 +29,19 @@ body {
     text-align: center;
     margin-top: 2px;
     margin-bottom: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
     user-select: none;
 }
 
-.noMargin {
-    margin: 0;
+.noVerticalMargin {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.noHorizontalMargin {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .button:link,

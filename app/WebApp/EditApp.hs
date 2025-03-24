@@ -29,7 +29,8 @@ editAppHtml appConfig database = do
     return $ do
         div_ [class_ "mainAppHeader"] $ do
             span_ [class_ "mainAppHeaderText"] (toHtml $ appTitle language)
-            a_ [class_ "button noMargin", href_ "/", style_ "float: right;"] (toHtml $ viewButtonLabel language)
+            a_ [class_ "button noVerticalMargin", href_ "/", style_ "float: right;"] (toHtml $ viewButtonLabel language)
+            a_ [class_ "button noVerticalMargin", href_ "/add", style_ "float: right;"] (toHtml $ addButtonLabel language)
         div_ [class_ "shoppingList"] $
             table_ [] $ do
                 tr_ [] $ do
@@ -49,6 +50,6 @@ editAppHtml appConfig database = do
                                     "window.location.replace('/modify?op=delete&id=%d&after='+encodeURIComponent(window.location.href)+'&n='+new Date().getTime());"
                                     (itemId item)
 
-                            a_ [class_ "button", href_ "#"] (toHtml $ editButtonLabel language)
+                            a_ [class_ "button noHorizontalMargin", href_ "#"] (toHtml $ editButtonLabel language)
                             br_ []
-                            a_ [class_ "button", href_ "#", onclick_ (pack delScript)] (toHtml $ deleteButtonLabel language)
+                            a_ [class_ "button noHorizontalMargin", href_ "#", onclick_ (pack delScript)] (toHtml $ deleteButtonLabel language)

@@ -6,6 +6,7 @@ module Localisation
     , editButtonLabel
     , deleteButtonLabel
     , viewButtonLabel
+    , addButtonLabel
     , finishedLabel
     , nameLabel
     , amountLabel
@@ -49,6 +50,10 @@ deleteButtonLabel Japanese = "削除"
 viewButtonLabel :: Language -> Text
 viewButtonLabel English  = "View"
 viewButtonLabel Japanese = "閲覧"
+
+addButtonLabel :: Language -> Text
+addButtonLabel English  = "Add"
+addButtonLabel Japanese = "追加"
 
 finishedLabel :: Language -> Text
 finishedLabel English  = "Finished"

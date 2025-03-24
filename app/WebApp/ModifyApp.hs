@@ -15,6 +15,7 @@ import qualified Database               as DB
 import           Database.SQLite.Simple (Connection)
 import qualified Network.HTTP.Types     as HTypes
 import           Network.URI            (parseURI)
+import           Network.URI.Encode     as URI
 import qualified Network.Wai            as Wai
 import           Network.Wai.Util       (redirect')
 
@@ -29,10 +30,10 @@ modifyApp _ database req send = do
                     case lookup' "id" requestMap of
                         Just x | isNumeric x -> do
                             let iid = fromJust (textToInt x)
-                                newName = lookup' "name" requestMap
+                                newName = lookup' "name" requestMap <&> URI.decodeText
                                 newAmount = textToInt =<< lookup' "amount" requestMap
                                 newPriority = textToPriority =<< lookup' "priority" requestMap
-                                newNotes = lookup' "notes" requestMap
+                                newNotes = lookup' "notes" requestMap <&> URI.decodeText
                                 newIsFinished = textToBool =<< lookup' "is_finished" requestMap
 
                             forM_ newName (DB.updateItemName database iid)
@@ -41,7 +42,7 @@ modifyApp _ database req send = do
                             forM_ newNotes (DB.updateItemNotes database iid)
                             forM_ newIsFinished (DB.updateItemIsFinished database iid)
 
-                            send =<< redirect' HTypes.status308 [] (fromJust $ parseURI (unpack afterUrl))
+                            send =<< redirect' HTypes.status308 [] (fromJust $ parseURI (URI.decode $ unpack afterUrl))
 
                         _ ->
                             invalidRequest
@@ -72,8 +73,8 @@ modifyApp _ database req send = do
         textToPriority _        = Nothing
 
         textToBool :: Text -> Maybe Bool
-        textToBool "true"  = Just True
-        textToBool "false" = Just False
-        textToBool _       = Nothing
+        textToBool "1" = Just True
+        textToBool "0" = Just False
+        textToBool _   = Nothing
 
         invalidRequest = send $ Wai.responseBuilder HTypes.status400 [] "INVALID REQUEST!"

@@ -40,9 +40,10 @@ mainAppHtml appConfig database = do
                     th_ (toHtml $ notesLabel language)
                 forM_ items $ \item ->
                     tr_ [] $ do
-                        let clickScript = printf "window.location.replace('/modify?op=update&id=%d&is_finished=%s&after='+encodeURIComponent(window.location.href)+'&n='+new Date().getTime());"
+                        let clickScript = printf
+                                "window.location.replace('/modify?op=update&id=%d&is_finished=%s&after='+encodeURIComponent(window.location.href)+'&n='+new Date().getTime());"
                                 (itemId item)
-                                (if itemIsFinished item then "0" else "1" :: String)
+                                (show $ not $ itemIsFinished item)
 
                         td_ [class_ "centreAlign"] $
                             div_ [class_ "shoppingListCheckbox", onclick_ (pack clickScript)] $ do

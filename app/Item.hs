@@ -1,6 +1,7 @@
 module Item (ItemPriority (..), ItemField (..)) where
 
 import           Data.Text                        (Text, pack)
+import           Data.Text.TRead                  (TRead (..))
 import           Database.SQLite.Simple           (FromRow (..), SQLData (..),
                                                    field)
 import           Database.SQLite.Simple.FromField (FromField (..))
@@ -29,6 +30,12 @@ instance FromField ItemPriority where
 
 instance ToField ItemPriority where
     toField = SQLText . pack . show
+
+instance TRead ItemPriority where
+    tReadMaybe "High"   = Just High
+    tReadMaybe "Normal" = Just Normal
+    tReadMaybe "Low"    = Just Low
+    tReadMaybe _        = Nothing
 
 data ItemField = ItemField
     { itemId         :: Int

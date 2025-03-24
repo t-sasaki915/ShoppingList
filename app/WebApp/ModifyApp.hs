@@ -14,7 +14,7 @@ import qualified Database               as DB
 import           Database.SQLite.Simple (Connection)
 import qualified Network.HTTP.Types     as HTypes
 import           Network.URI            (parseURI)
-import           Network.URI.Encode     as URI
+import qualified Network.URI.Encode     as URI
 import qualified Network.Wai            as Wai
 import           Network.Wai.Util       (redirect')
 

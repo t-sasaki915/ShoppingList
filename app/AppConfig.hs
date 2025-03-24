@@ -4,7 +4,7 @@ module AppConfig
     ) where
 
 import qualified AppConfig.Resource as Res
-import           Data.Yaml
+import           Data.Yaml          (FromJSON (..), Value (..), (.!=), (.:?))
 import           Localisation       (Language)
 
 data AppConfig = AppConfig

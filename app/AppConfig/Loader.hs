@@ -1,14 +1,14 @@
 module AppConfig.Loader (loadConfig) where
 
 import           AppConfig          (AppConfig)
-import           AppConfig.Resource (defaultConfigFile)
+import qualified AppConfig.Resource as Res
 import qualified Data.ByteString    as BS
 import           Data.Yaml          (decodeEither', prettyPrintParseException)
 import           System.Directory   (doesFileExist)
 import           Text.Printf        (printf)
 
 writeDefaultConfigFile :: FilePath -> IO ()
-writeDefaultConfigFile = flip BS.writeFile defaultConfigFile
+writeDefaultConfigFile = flip BS.writeFile Res.defaultConfigFile
 
 readConfigFile :: FilePath -> IO BS.ByteString
 readConfigFile filePath =

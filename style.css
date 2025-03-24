@@ -67,7 +67,7 @@ th {
 td {
     border: 1px solid #DDDDDD;
     padding: 8px;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
 .leftAlign {

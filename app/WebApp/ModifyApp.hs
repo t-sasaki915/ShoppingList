@@ -2,6 +2,7 @@ module WebApp.ModifyApp (modifyApp) where
 
 import           AppConfig              (AppConfig (..))
 import           Control.Monad          (forM_)
+import           Data.ByteString        (ByteString)
 import           Data.Functor           ((<&>))
 import qualified Data.Map               as M
 import           Data.Maybe             (fromJust)
@@ -19,20 +20,20 @@ import           Network.Wai.Util       (redirect')
 
 modifyApp :: AppConfig -> Connection -> Wai.Application
 modifyApp _ database req send = do
-    let requestMap = process $ Wai.queryString req
+    let queryMap = transform $ Wai.queryString req
 
-    case lookup' "after" requestMap of
+    case lookup' "after" queryMap of
         Just afterUrl ->
-            case lookup' "op" requestMap of
+            case lookup' "op" queryMap of
                 Just "update" ->
-                    case lookup' "id" requestMap of
+                    case lookup' "id" queryMap of
                         Just x | isNumeric x -> do
-                            let iid = fromJust (tReadMaybe x)
-                                newName = lookup' "name" requestMap <&> URI.decodeText
-                                newAmount = tReadMaybe =<< lookup' "amount" requestMap
-                                newPriority = tReadMaybe =<< lookup' "priority" requestMap
-                                newNotes = lookup' "notes" requestMap <&> URI.decodeText
-                                newIsFinished = tReadMaybe =<< lookup' "is_finished" requestMap
+                            let iid = tRead x
+                                newName = lookup' "name" queryMap <&> URI.decodeText
+                                newAmount = tReadMaybe =<< lookup' "amount" queryMap
+                                newPriority = tReadMaybe =<< lookup' "priority" queryMap
+                                newNotes = lookup' "notes" queryMap <&> URI.decodeText
+                                newIsFinished = tReadMaybe =<< lookup' "is_finished" queryMap
 
                             forM_ newName (DB.updateItemName database iid)
                             forM_ newAmount (DB.updateItemAmount database iid)
@@ -51,7 +52,8 @@ modifyApp _ database req send = do
         _ ->
             invalidRequest
     where
-        process = M.fromList . map (\(key, mvalue) -> (decodeUtf8Lenient key, mvalue <&> decodeUtf8Lenient))
+        transform :: [(ByteString, Maybe ByteString)] -> M.Map Text (Maybe Text)
+        transform = M.fromList . map (\(key, mvalue) -> (decodeUtf8Lenient key, mvalue <&> decodeUtf8Lenient))
 
         lookup' :: Text -> M.Map Text (Maybe Text) -> Maybe Text
         lookup' key lst =

@@ -41,7 +41,19 @@ modifyApp _ database req send = do
                             forM_ newNotes (DB.updateItemNotes database iid)
                             forM_ newIsFinished (DB.updateItemIsFinished database iid)
 
-                            send =<< redirect' HTypes.status308 [] (fromJust $ parseURI (URI.decode $ unpack afterUrl))
+                            redirect afterUrl
+
+                        _ ->
+                            invalidRequest
+
+                Just "delete" ->
+                    case lookup' "id" queryMap of
+                        Just x | isNumeric x -> do
+                            let iid = tRead x
+
+                            DB.deleteItem database iid
+
+                            redirect afterUrl
 
                         _ ->
                             invalidRequest
@@ -62,3 +74,4 @@ modifyApp _ database req send = do
                 _             -> Nothing
 
         invalidRequest = send $ Wai.responseBuilder HTypes.status400 [] "INVALID REQUEST!"
+        redirect afterUrl = send =<< redirect' HTypes.status301 [] (fromJust $ parseURI (URI.decode $ unpack afterUrl))

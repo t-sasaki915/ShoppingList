@@ -5,10 +5,11 @@ module Database
     , updateItemPriority
     , updateItemNotes
     , updateItemIsFinished
+    , deleteItem
     ) where
 
 import           Data.Text              (Text)
-import           Database.SQLite.Simple (Connection, execute, query_)
+import           Database.SQLite.Simple (Connection, Only (..), execute, query_)
 import           Item                   (ItemField, ItemPriority)
 
 getAllItems :: Connection -> IO [ItemField]
@@ -33,3 +34,7 @@ updateItemNotes database iid newNotes =
 updateItemIsFinished :: Connection -> Int -> Bool -> IO ()
 updateItemIsFinished database iid newIsFinished =
     execute database "UPDATE shopping_list SET is_finished = ? WHERE id = ?" (newIsFinished, iid)
+
+deleteItem :: Connection -> Int -> IO ()
+deleteItem database iid =
+    execute database "DELETE FROM shopping_list WHERE id = ?" (Only iid)

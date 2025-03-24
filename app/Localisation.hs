@@ -4,12 +4,14 @@ module Localisation
     , htmlLanguageCode
     , appTitle
     , editButtonLabel
+    , deleteButtonLabel
     , viewButtonLabel
     , finishedLabel
     , nameLabel
     , amountLabel
     , priorityLabel
     , notesLabel
+    , operationLabel
     ) where
 
 import           Data.Text   (Text)
@@ -40,6 +42,10 @@ editButtonLabel :: Language -> Text
 editButtonLabel English  = "Edit"
 editButtonLabel Japanese = "編集"
 
+deleteButtonLabel :: Language -> Text
+deleteButtonLabel English  = "Delete"
+deleteButtonLabel Japanese = "削除"
+
 viewButtonLabel :: Language -> Text
 viewButtonLabel English  = "View"
 viewButtonLabel Japanese = "閲覧"
@@ -63,3 +69,7 @@ priorityLabel Japanese = "重要性"
 notesLabel :: Language -> Text
 notesLabel English  = "Notes"
 notesLabel Japanese = "備考"
+
+operationLabel :: Language -> Text
+operationLabel English  = "Operation"
+operationLabel Japanese = "操作"

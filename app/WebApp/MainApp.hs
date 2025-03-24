@@ -29,7 +29,7 @@ mainAppHtml appConfig database = do
     return $ do
         div_ [class_ "mainAppHeader"] $ do
             span_ [class_ "mainAppHeaderText"] (toHtml $ appTitle language)
-            a_ [class_ "button", href_ "/edit", style_ "float: right;"] (toHtml $ editButtonLabel language)
+            a_ [class_ "button noMargin", href_ "/edit", style_ "float: right;"] (toHtml $ editButtonLabel language)
         div_ [class_ "shoppingList"] $
             table_ [] $ do
                 tr_ [] $ do

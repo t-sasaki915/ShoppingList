@@ -37,7 +37,7 @@ manageAppHtml appConfig database = do
                     th_ [] (toHtml $ nameLabel language)
                     th_ [style_ "width: 4em;"] (toHtml $ amountLabel language)
                     th_ [style_ "width: 4.5em;"] (toHtml $ priorityLabel language)
-                    th_ [] (toHtml $ notesLabel language)
+                    th_ [style_ "width: 7em;"] (toHtml $ notesLabel language)
                     th_ [style_ "width: 5em;"] (toHtml $ operationLabel language)
                 forM_ items $ \item ->
                     tr_ [] $ do

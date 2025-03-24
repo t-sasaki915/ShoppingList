@@ -37,7 +37,7 @@ mainAppHtml appConfig database = do
                     th_ [] (toHtml $ nameLabel language)
                     th_ [style_ "width: 4em;"] (toHtml $ amountLabel language)
                     th_ [style_ "width: 4.5em;"] (toHtml $ priorityLabel language)
-                    th_ [] (toHtml $ notesLabel language)
+                    th_ [style_ "width: 8em;"] (toHtml $ notesLabel language)
                 forM_ items $ \item ->
                     tr_ [] $ do
                         let clickScript = printf

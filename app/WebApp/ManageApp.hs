@@ -34,11 +34,11 @@ manageAppHtml appConfig database = do
         div_ [class_ "shoppingList"] $
             table_ [] $ do
                 tr_ [] $ do
-                    th_ (toHtml $ nameLabel language)
-                    th_ (toHtml $ amountLabel language)
-                    th_ (toHtml $ priorityLabel language)
-                    th_ (toHtml $ notesLabel language)
-                    th_ (toHtml $ operationLabel language)
+                    th_ [] (toHtml $ nameLabel language)
+                    th_ [style_ "width: 4em;"] (toHtml $ amountLabel language)
+                    th_ [style_ "width: 4.5em;"] (toHtml $ priorityLabel language)
+                    th_ [] (toHtml $ notesLabel language)
+                    th_ [style_ "width: 5em;"] (toHtml $ operationLabel language)
                 forM_ items $ \item ->
                     tr_ [] $ do
                         td_ [class_ "leftAlign"] (toHtml $ itemName item)

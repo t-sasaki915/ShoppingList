@@ -33,11 +33,11 @@ mainAppHtml appConfig database = do
         div_ [class_ "shoppingList"] $
             table_ [] $ do
                 tr_ [] $ do
-                    th_ (toHtml $ finishedLabel language)
-                    th_ (toHtml $ nameLabel language)
-                    th_ (toHtml $ amountLabel language)
-                    th_ (toHtml $ priorityLabel language)
-                    th_ (toHtml $ notesLabel language)
+                    th_ [style_ "width: 2.5em;"] (toHtml $ finishedLabel language)
+                    th_ [] (toHtml $ nameLabel language)
+                    th_ [style_ "width: 4em;"] (toHtml $ amountLabel language)
+                    th_ [style_ "width: 4.5em;"] (toHtml $ priorityLabel language)
+                    th_ [] (toHtml $ notesLabel language)
                 forM_ items $ \item ->
                     tr_ [] $ do
                         let clickScript = printf

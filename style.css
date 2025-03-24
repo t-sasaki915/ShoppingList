@@ -54,6 +54,7 @@ table {
     border-collapse: collapse;
     width: 100%;
     font-size: 3vw;
+    table-layout: fixed;
 }
 
 th {
@@ -66,6 +67,7 @@ th {
 td {
     border: 1px solid #DDDDDD;
     padding: 8px;
+    overflow-x: scroll;
 }
 
 .leftAlign {

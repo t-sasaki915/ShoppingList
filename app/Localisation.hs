@@ -71,7 +71,7 @@ doneButtonLabel English  = "Done"
 doneButtonLabel Japanese = "完了"
 
 finishedLabel :: Language -> Text
-finishedLabel English  = "Finished"
+finishedLabel English  = "Done"
 finishedLabel Japanese = "完了"
 
 nameLabel :: Language -> Text

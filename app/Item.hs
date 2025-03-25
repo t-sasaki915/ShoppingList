@@ -37,6 +37,19 @@ instance TRead ItemPriority where
     tReadMaybe "Low"    = Just Low
     tReadMaybe _        = Nothing
 
+instance Ord ItemPriority where
+    compare High High     = EQ
+    compare Normal Normal = EQ
+    compare Low Low       = EQ
+
+    compare Low Normal    = LT
+    compare Normal High   = LT
+    compare Low High      = LT
+
+    compare High Normal   = GT
+    compare Normal Low    = GT
+    compare High Low      = GT
+
 data ItemField = ItemField
     { itemId         :: Int
     , itemName       :: Text

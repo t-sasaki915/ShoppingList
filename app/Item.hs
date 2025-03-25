@@ -11,7 +11,7 @@ import           Localisation                     (Language (..),
                                                    Localisable (..))
 import           Text.Printf                      (printf)
 
-data ItemPriority = High | Normal | Low deriving Show
+data ItemPriority = High | Normal | Low deriving (Show, Eq)
 
 instance Localisable ItemPriority where
     localise High English    = "High"

@@ -7,10 +7,13 @@ module Database
     , updateItemIsFinished
     , deleteItem
     , addItem
+    , getItem
     ) where
 
+import           Data.Functor           ((<&>))
 import           Data.Text              (Text)
-import           Database.SQLite.Simple (Connection, Only (..), execute, query_)
+import           Database.SQLite.Simple (Connection, Only (..), execute, query,
+                                         query_)
 import           Item                   (ItemField, ItemPriority)
 
 getAllItems :: Connection -> IO [ItemField]
@@ -45,3 +48,7 @@ addItem database newName newAmount newPriority newNotes =
     execute database
         "INSERT INTO shopping_list (name, amount, priority, notes, is_finished) VALUES (?, ?, ?, ?, 0)"
         (newName, newAmount, newPriority, newNotes)
+
+getItem :: Connection -> Int -> IO ItemField
+getItem database iid =
+    query database "SELECT * FROM shopping_list WHERE id = ?" (Only iid) <&> head

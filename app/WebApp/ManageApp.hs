@@ -50,6 +50,6 @@ manageAppHtml appConfig database = do
                                     "window.location.replace('/modify?op=delete&id=%d&after='+encodeURIComponent(window.location.href)+'&n='+new Date().getTime());"
                                     (itemId item)
 
-                            a_ [class_ "button noHorizontalMargin", href_ "#"] (toHtml $ editButtonLabel language)
+                            a_ [class_ "button noHorizontalMargin", href_ (pack $ printf "/edit?id=%d" (itemId item))] (toHtml $ editButtonLabel language)
                             br_ []
                             a_ [class_ "button noHorizontalMargin", href_ "#", onclick_ (pack delScript)] (toHtml $ deleteButtonLabel language)

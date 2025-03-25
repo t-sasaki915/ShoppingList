@@ -6,8 +6,8 @@ module WebApp
     ) where
 
 import           AppConfig               (AppConfig (..))
-import           Data.ByteString         (ByteString, toStrict)
-import           Data.ByteString.Builder (Builder, byteString)
+import           Data.ByteString         (ByteString)
+import           Data.ByteString.Builder (Builder, byteString, lazyByteString)
 import           Data.Functor            ((<&>))
 import qualified Data.Map                as M
 import           Data.Text               (Text, pack)
@@ -33,7 +33,7 @@ constructWebApp appConfig content = do
 
 renderWebApp :: AppConfig -> Html () -> Builder
 renderWebApp appConfig content =
-    byteString $ toStrict $ renderBS (constructWebApp appConfig content)
+    lazyByteString $ renderBS (constructWebApp appConfig content)
 
 transformQuery :: [(ByteString, Maybe ByteString)] -> M.Map Text (Maybe Text)
 transformQuery = M.fromList . map (\(k, v) -> (decodeUtf8Lenient k, v <&> decodeUtf8Lenient))

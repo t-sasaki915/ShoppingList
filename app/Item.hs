@@ -1,6 +1,7 @@
 module Item (ItemPriority (..), ItemField (..)) where
 
-import           Data.Text                        (Text, pack)
+import           Data.Text                        (Text)
+import           Data.Text.Extra                  (tshow)
 import           Data.Text.TRead                  (TRead (..))
 import           Database.SQLite.Simple           (FromRow (..), SQLData (..),
                                                    field)
@@ -29,7 +30,7 @@ instance FromField ItemPriority where
     fromField (Field x _)                  = fail (printf "Unrecognisable priority: '%s'" (show x))
 
 instance ToField ItemPriority where
-    toField = SQLText . pack . show
+    toField = SQLText . tshow
 
 instance TRead ItemPriority where
     tReadMaybe "High"   = Just High

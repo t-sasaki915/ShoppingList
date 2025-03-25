@@ -1,34 +1,31 @@
 module WebApp.EditApp (editApp) where
 
-import           AppConfig               (AppConfig (..))
-import           Data.ByteString.Builder (byteString)
-import           Data.Maybe              (fromMaybe)
-import           Data.Text               (pack)
-import           Data.Text.TRead         (TRead (tRead))
-import           Data.Yaml.Internal      (isNumeric)
-import           Database                (getItem)
-import           Database.SQLite.Simple  (Connection)
-import           Item                    (ItemField (..), ItemPriority (..))
+import           AppConfig              (AppConfig (..))
+import           Data.Maybe             (fromMaybe)
+import           Data.Text              (pack)
+import           Data.Text.Extra        (tshow)
+import           Data.Text.TRead        (TRead (..))
+import           Database               (getItem)
+import           Database.SQLite.Simple (Connection)
+import           Item                   (ItemField (..), ItemPriority (..))
 import           Localisation
 import           Lucid
-import qualified Network.HTTP.Types      as HTypes
-import qualified Network.Wai             as Wai
-import           WebApp                  (lookupQuery, renderWebApp,
-                                          transformQuery)
+import qualified Network.HTTP.Types     as HTypes
+import qualified Network.Wai            as Wai
+import           WebApp                 (renderWebApp, transformQuery,
+                                         withQuery)
 
 editApp :: AppConfig -> Connection -> Wai.Application
 editApp appConfig database req send = do
     let queryMap = transformQuery $ Wai.queryString req
 
-    case lookupQuery "id" queryMap of
-        Just x | isNumeric x -> do
-            let iid = tRead x
+    res <- withQuery "id" queryMap $ \rawId -> do
+        let iid = tRead rawId
 
-            appHtml <- editAppHtml appConfig database iid
-            send $ Wai.responseBuilder HTypes.status200 [] (byteString $ renderWebApp appConfig appHtml)
+        appHtml <- editAppHtml appConfig database iid
+        return $ Wai.responseBuilder HTypes.status200 [] (renderWebApp appConfig appHtml)
 
-        _ ->
-            send $ Wai.responseBuilder HTypes.status400 [] "INVALID REQUEST!"
+    send res
 
 editAppHtml :: AppConfig -> Connection -> Int -> IO (Html ())
 editAppHtml appConfig database iid = do
@@ -67,7 +64,7 @@ editAppHtml appConfig database iid = do
                     td_ [class_ "leftAlign"] $
                         input_ [type_ "text", value_ (itemName item), class_ "itemDataInput", id_ "itemName"]
                     td_ [class_ "centreAlign"] $
-                        input_ [type_ "number", value_ (pack $ show $ itemAmount item), class_ "itemDataInput", min_ "1", id_ "itemAmount"]
+                        input_ [type_ "number", value_ (tshow $ itemAmount item), class_ "itemDataInput", min_ "1", id_ "itemAmount"]
                     td_ [class_ "centreAlign"] $
                         select_ [class_ "itemDataInput"] $ do
                             let p = itemPriority item

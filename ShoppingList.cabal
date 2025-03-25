@@ -20,7 +20,8 @@ source-repository head
 
 library
   exposed-modules:
-        Data.Text.TRead
+      Data.Text.Extra
+      Data.Text.TRead
   other-modules:
       Paths_ShoppingList
   autogen-modules:

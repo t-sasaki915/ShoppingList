@@ -1,13 +1,22 @@
-module WebApp (renderWebApp, transformQuery, lookupQuery) where
+module WebApp
+    ( renderWebApp
+    , transformQuery
+    , lookupQuery
+    , withQuery
+    ) where
 
-import           AppConfig          (AppConfig (..))
-import           Data.ByteString    (ByteString, toStrict)
-import           Data.Functor       ((<&>))
-import qualified Data.Map           as M
-import           Data.Text          (Text)
-import           Data.Text.Encoding (decodeUtf8Lenient)
-import           Localisation       (appTitle, htmlLanguageCode)
+import           AppConfig               (AppConfig (..))
+import           Data.ByteString         (ByteString, toStrict)
+import           Data.ByteString.Builder (Builder, byteString)
+import           Data.Functor            ((<&>))
+import qualified Data.Map                as M
+import           Data.Text               (Text, pack)
+import           Data.Text.Encoding      (decodeUtf8Lenient, encodeUtf8)
+import           Localisation            (appTitle, htmlLanguageCode)
 import           Lucid
+import qualified Network.HTTP.Types      as HTypes
+import qualified Network.Wai             as Wai
+import           Text.Printf             (printf)
 
 constructWebApp :: AppConfig -> Html () -> Html ()
 constructWebApp appConfig content = do
@@ -22,8 +31,9 @@ constructWebApp appConfig content = do
             link_ [rel_ "stylesheet", href_ "style.css"]
         body_ content
 
-renderWebApp :: AppConfig -> Html () -> ByteString
-renderWebApp appConfig content = toStrict $ renderBS (constructWebApp appConfig content)
+renderWebApp :: AppConfig -> Html () -> Builder
+renderWebApp appConfig content =
+    byteString $ toStrict $ renderBS (constructWebApp appConfig content)
 
 transformQuery :: [(ByteString, Maybe ByteString)] -> M.Map Text (Maybe Text)
 transformQuery = M.fromList . map (\(k, v) -> (decodeUtf8Lenient k, v <&> decodeUtf8Lenient))
@@ -33,3 +43,11 @@ lookupQuery k l =
     case M.lookup k l of
         Just (Just x) -> Just x
         _             -> Nothing
+
+withQuery :: Text -> M.Map Text (Maybe Text) -> (Text -> IO Wai.Response) -> IO Wai.Response
+withQuery q l f =
+    case lookupQuery q l of
+        Just x  -> f x
+        Nothing ->
+            return $ Wai.responseBuilder HTypes.status400 []
+                (byteString (encodeUtf8 $ pack $ printf "REQUIRED QUERY '%s' IS MISSING!" q))

@@ -1,7 +1,6 @@
 module WebApp.AddApp (addApp) where
 
 import           AppConfig               (AppConfig (..))
-import           Data.ByteString.Builder (byteString)
 import           Data.Text               (pack)
 import           Database.SQLite.Simple  (Connection)
 import           Item                    (ItemPriority (..))
@@ -14,7 +13,7 @@ import           WebApp                  (renderWebApp)
 addApp :: AppConfig -> Connection -> Wai.Application
 addApp appConfig database _ send = do
     appHtml <- addAppHtml appConfig database
-    send $ Wai.responseBuilder HTypes.status200 [] (byteString $ renderWebApp appConfig appHtml)
+    send $ Wai.responseBuilder HTypes.status200 [] (renderWebApp appConfig appHtml)
 
 addAppHtml :: AppConfig -> Connection -> IO (Html ())
 addAppHtml appConfig _ = do

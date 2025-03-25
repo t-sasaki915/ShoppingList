@@ -2,7 +2,6 @@ module WebApp.MainApp (mainApp) where
 
 import           AppConfig               (AppConfig (..))
 import           Control.Monad           (forM_)
-import           Data.ByteString.Builder (byteString)
 import           Data.Maybe              (fromMaybe)
 import           Data.Text               (pack)
 import           Database                (getAllItems)
@@ -18,7 +17,7 @@ import           WebApp                  (renderWebApp)
 mainApp :: AppConfig -> Connection -> Wai.Application
 mainApp appConfig database _ send = do
     appHtml <- mainAppHtml appConfig database
-    send $ Wai.responseBuilder HTypes.status200 [] (byteString $ renderWebApp appConfig appHtml)
+    send $ Wai.responseBuilder HTypes.status200 [] (renderWebApp appConfig appHtml)
 
 mainAppHtml :: AppConfig -> Connection -> IO (Html ())
 mainAppHtml appConfig database = do

@@ -36,7 +36,7 @@ library
   default-extensions: LambdaCase, OverloadedStrings
 
 executable ShoppingList-exe
-  main-is: Main.hsSS
+  main-is: Main.hs
   other-modules:
       Paths_ShoppingList
       AppConfig.Loader

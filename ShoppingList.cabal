@@ -33,10 +33,10 @@ library
       base >=4.7 && <5
     , text == 2.0.2
   default-language: Haskell2010
-  default-extensions: LambdaCase
+  default-extensions: LambdaCase, OverloadedStrings
 
 executable ShoppingList-exe
-  main-is: Main.hs
+  main-is: Main.hsSS
   other-modules:
       Paths_ShoppingList
       AppConfig.Loader

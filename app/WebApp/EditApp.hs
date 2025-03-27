@@ -50,16 +50,16 @@ editAppHtml appConfig database iid = do
             , "}"
             ]
         div_ [class_ "mainAppHeader"] $ do
-            span_ [class_ "mainAppHeaderText"] (toHtml $ appTitle language)
-            a_ [class_ "button noVerticalMargin", href_ "#", style_ "float: right;", onclick_ "apply();"] (toHtml $ doneButtonLabel language)
-            a_ [class_ "button noVerticalMargin", href_ "/manage", style_ "float: right;"] (toHtml $ cancelButtonLabel language)
+            span_ [class_ "mainAppHeaderText"] (toHtml $ localise AppTitle language)
+            a_ [class_ "button noVerticalMargin", href_ "#", style_ "float: right;", onclick_ "apply();"] (toHtml $ localise DoneButtonLabel language)
+            a_ [class_ "button noVerticalMargin", href_ "/manage", style_ "float: right;"] (toHtml $ localise CancelButtonLabel language)
         div_ [class_ "shoppingList"] $
             table_ [] $ do
                 tr_ [] $ do
-                    th_ [] (toHtml $ nameLabel language)
-                    th_ [style_ "width: 5em;"] (toHtml $ amountLabel language)
-                    th_ [style_ "width: 5em;"] (toHtml $ priorityLabel language)
-                    th_ [style_ "width: 9em;"] (toHtml $ notesLabel language)
+                    th_ [] (toHtml $ localise NameLabel language)
+                    th_ [style_ "width: 5em;"] (toHtml $ localise AmountLabel language)
+                    th_ [style_ "width: 5em;"] (toHtml $ localise PriorityLabel language)
+                    th_ [style_ "width: 9em;"] (toHtml $ localise NotesLabel language)
                 tr_ [] $ do
                     td_ [class_ "leftAlign"] $
                         input_ [type_ "text", value_ (itemName item), class_ "itemDataInput", id_ "itemName"]

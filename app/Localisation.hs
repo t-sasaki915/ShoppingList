@@ -2,20 +2,9 @@ module Localisation
     ( Language (..)
     , Localisable (..)
     , htmlLanguageCode
-    , appTitle
-    , editButtonLabel
-    , manageButtonLabel
-    , deleteButtonLabel
-    , viewButtonLabel
-    , addButtonLabel
-    , cancelButtonLabel
-    , doneButtonLabel
-    , finishedLabel
-    , nameLabel
-    , amountLabel
-    , priorityLabel
-    , notesLabel
-    , operationLabel
+    , AppTitle (..)
+    , ButtonLabel (..)
+    , Label (..)
     ) where
 
 import           Data.Text   (Text)
@@ -26,6 +15,10 @@ data Language = English
               | Japanese
               deriving Show
 
+htmlLanguageCode :: Language -> Text
+htmlLanguageCode English  = "en"
+htmlLanguageCode Japanese = "ja"
+
 instance FromJSON Language where
     parseJSON (String "English")  = pure English
     parseJSON (String "Japanese") = pure Japanese
@@ -34,62 +27,57 @@ instance FromJSON Language where
 class Localisable a where
     localise :: a -> Language -> Text
 
-htmlLanguageCode :: Language -> Text
-htmlLanguageCode English  = "en"
-htmlLanguageCode Japanese = "ja"
+data AppTitle = AppTitle
 
-appTitle :: Language -> Text
-appTitle English  = "ShoppingList"
-appTitle Japanese = "買い物リスト"
+instance Localisable AppTitle where
+    localise AppTitle English  = "ShoppingList"
+    localise AppTitle Japanese = "買い物リスト"
 
-editButtonLabel :: Language -> Text
-editButtonLabel English  = "Edit"
-editButtonLabel Japanese = "編集"
+data ButtonLabel = EditButtonLabel
+                 | ManageButtonLabel
+                 | DeleteButtonLabel
+                 | ViewButtonLabel
+                 | AddButtonLabel
+                 | CancelButtonLabel
+                 | DoneButtonLabel
 
-manageButtonLabel :: Language -> Text
-manageButtonLabel English  = "Manage"
-manageButtonLabel Japanese = "管理"
+instance Localisable ButtonLabel where
+    localise x English = case x of
+        EditButtonLabel   -> "Edit"
+        ManageButtonLabel -> "Manage"
+        DeleteButtonLabel -> "Delete"
+        ViewButtonLabel   -> "View"
+        AddButtonLabel    -> "Add"
+        CancelButtonLabel -> "Cancel"
+        DoneButtonLabel   -> "Done"
+    localise x Japanese = case x of
+        EditButtonLabel   -> "編集"
+        ManageButtonLabel -> "管理"
+        DeleteButtonLabel -> "削除"
+        ViewButtonLabel   -> "閲覧"
+        AddButtonLabel    -> "追加"
+        CancelButtonLabel -> "中止"
+        DoneButtonLabel   -> "完了"
 
-deleteButtonLabel :: Language -> Text
-deleteButtonLabel English  = "Delete"
-deleteButtonLabel Japanese = "削除"
+data Label = DoneLabel
+           | NameLabel
+           | AmountLabel
+           | PriorityLabel
+           | NotesLabel
+           | OperationLabel
 
-viewButtonLabel :: Language -> Text
-viewButtonLabel English  = "View"
-viewButtonLabel Japanese = "閲覧"
-
-addButtonLabel :: Language -> Text
-addButtonLabel English  = "Add"
-addButtonLabel Japanese = "追加"
-
-cancelButtonLabel :: Language -> Text
-cancelButtonLabel English  = "Cancel"
-cancelButtonLabel Japanese = "中止"
-
-doneButtonLabel :: Language -> Text
-doneButtonLabel English  = "Done"
-doneButtonLabel Japanese = "完了"
-
-finishedLabel :: Language -> Text
-finishedLabel English  = "Done"
-finishedLabel Japanese = "完了"
-
-nameLabel :: Language -> Text
-nameLabel English  = "Name"
-nameLabel Japanese = "名称"
-
-amountLabel :: Language -> Text
-amountLabel English  = "Amount"
-amountLabel Japanese = "個数"
-
-priorityLabel :: Language -> Text
-priorityLabel English  = "Priority"
-priorityLabel Japanese = "重要性"
-
-notesLabel :: Language -> Text
-notesLabel English  = "Notes"
-notesLabel Japanese = "備考"
-
-operationLabel :: Language -> Text
-operationLabel English  = "Operation"
-operationLabel Japanese = "操作"
+instance Localisable Label where
+    localise x English = case x of
+        DoneLabel      -> "Done"
+        NameLabel      -> "Name"
+        AmountLabel    -> "Amount"
+        PriorityLabel  -> "Priority"
+        NotesLabel     -> "Notes"
+        OperationLabel -> "Operation"
+    localise x Japanese = case x of
+        DoneLabel      -> "完了"
+        NameLabel      -> "名称"
+        AmountLabel    -> "個数"
+        PriorityLabel  -> "重要性"
+        NotesLabel     -> "備考"
+        OperationLabel -> "操作"

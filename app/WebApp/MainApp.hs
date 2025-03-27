@@ -27,16 +27,16 @@ mainAppHtml appConfig database = do
 
     return $ do
         div_ [class_ "mainAppHeader"] $ do
-            span_ [class_ "mainAppHeaderText"] (toHtml $ appTitle language)
-            a_ [class_ "button noVerticalMargin", href_ "/manage", style_ "float: right;"] (toHtml $ manageButtonLabel language)
+            span_ [class_ "mainAppHeaderText"] (toHtml $ localise AppTitle language)
+            a_ [class_ "button noVerticalMargin", href_ "/manage", style_ "float: right;"] (toHtml $ localise ManageButtonLabel language)
         div_ [class_ "shoppingList"] $
             table_ [] $ do
                 tr_ [] $ do
-                    th_ [style_ "width: 2.5em;"] (toHtml $ finishedLabel language)
-                    th_ [] (toHtml $ nameLabel language)
-                    th_ [style_ "width: 4em;"] (toHtml $ amountLabel language)
-                    th_ [style_ "width: 4.5em;"] (toHtml $ priorityLabel language)
-                    th_ [style_ "width: 8em;"] (toHtml $ notesLabel language)
+                    th_ [style_ "width: 2.5em;"] (toHtml $ localise DoneLabel language)
+                    th_ [] (toHtml $ localise NameLabel language)
+                    th_ [style_ "width: 4em;"] (toHtml $ localise AmountLabel language)
+                    th_ [style_ "width: 4.5em;"] (toHtml $ localise PriorityLabel language)
+                    th_ [style_ "width: 8em;"] (toHtml $ localise NotesLabel language)
                 forM_ items $ \item ->
                     tr_ [] $ do
                         let clickScript = printf

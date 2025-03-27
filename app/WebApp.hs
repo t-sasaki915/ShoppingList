@@ -12,7 +12,8 @@ import           Data.Functor            ((<&>))
 import qualified Data.Map                as M
 import           Data.Text               (Text, pack)
 import           Data.Text.Encoding      (decodeUtf8Lenient, encodeUtf8)
-import           Localisation            (appTitle, htmlLanguageCode)
+import           Localisation            (AppTitle (..), Localisable (..),
+                                          htmlLanguageCode)
 import           Lucid
 import qualified Network.HTTP.Types      as HTypes
 import qualified Network.Wai             as Wai
@@ -25,7 +26,7 @@ constructWebApp appConfig content = do
     doctype_
     html_ [lang_ (htmlLanguageCode language)] $ do
         head_ $ do
-            title_ [] (toHtml $ appTitle language)
+            title_ [] (toHtml $ localise AppTitle language)
             meta_ [charset_ "UTF-8"]
             meta_ [name_ "viewport", content_ "width=device-width,initial-scale=1"]
             link_ [rel_ "stylesheet", href_ "style.css"]

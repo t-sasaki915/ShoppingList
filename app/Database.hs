@@ -8,13 +8,15 @@ module Database
     , deleteItem
     , addItem
     , getItem
+    , getItemOrderOption
     ) where
 
 import           Data.Functor           ((<&>))
 import           Data.Text              (Text)
 import           Database.SQLite.Simple (Connection, Only (..), execute, query,
                                          query_)
-import           Item                   (ItemField, ItemPriority)
+import           Item                   (ItemField, ItemOrderOption,
+                                         ItemPriority)
 
 getAllItems :: Connection -> IO [ItemField]
 getAllItems = flip query_ "SELECT * FROM shopping_list"
@@ -52,3 +54,7 @@ addItem database newName newAmount newPriority newNotes =
 getItem :: Connection -> Int -> IO ItemField
 getItem database iid =
     query database "SELECT * FROM shopping_list WHERE id = ?" (Only iid) <&> head
+
+getItemOrderOption :: Connection -> IO ItemOrderOption
+getItemOrderOption database =
+    query_ database "SELECT hide_done_items, item_order FROM user_setting WHERE name = 'order_options'" <&> head

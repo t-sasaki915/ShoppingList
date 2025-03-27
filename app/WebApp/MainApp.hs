@@ -4,9 +4,9 @@ import           AppConfig              (AppConfig (..))
 import           Control.Monad          (forM_)
 import           Data.Maybe             (fromMaybe)
 import           Data.Text              (pack)
-import           Database               (getAllItems)
+import           Database               (getAllItems, getItemOrderOption)
 import           Database.SQLite.Simple (Connection)
-import           Item                   (ItemField (..))
+import           Item                   (ItemField (..), ItemOrderOption (..))
 import           Localisation           (AppTitle (..), ButtonLabel (..),
                                          Label (..), Localisable (..))
 import           Lucid
@@ -25,12 +25,19 @@ mainAppHtml appConfig database = do
     let language = webInterfaceLanguage appConfig
 
     items <- getAllItems database
+    orderOpts <- getItemOrderOption database
+
+    let itemsToShow =
+            if shouldHideDoneItems orderOpts then
+                filter (not . itemIsFinished) items
+            else
+                items
 
     return $ do
         div_ [class_ "mainAppHeader"] $ do
             localiseHtml AppTitle language
             a_ [class_ "button noVerticalMargin", href_ "/manage", style_ "float: right;"] (localiseHtml ManageButtonLabel language)
-        div_ [class_"orderOptions"] $ do
+        div_ [class_ "orderOptions"] $ do
             div_ [class_ "shoppingListCheckbox smaller", style_ "float: left; margin: calc((5vw - 4vw) / 2);"] $ do
                 input_ [type_ "checkbox", id_ "hideDoneItems"]
                 label_ [for_ "hideDoneItems"] ""
@@ -43,7 +50,7 @@ mainAppHtml appConfig database = do
                     th_ [style_ "width: 4em;"] (localiseHtml AmountLabel language)
                     th_ [style_ "width: 4.5em;"] (localiseHtml PriorityLabel language)
                     th_ [style_ "width: 8em;"] (localiseHtml NotesLabel language)
-                forM_ items $ \item ->
+                forM_ itemsToShow $ \item ->
                     tr_ [] $ do
                         let clickScript = printf
                                 "window.location.replace('/modify?op=update&id=%d&is_finished=%s&after='+encodeURIComponent(window.location.href)+'&n='+new Date().getTime());"

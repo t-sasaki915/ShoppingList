@@ -1,4 +1,9 @@
-module Item (ItemPriority (..), ItemField (..)) where
+module Item
+    ( ItemPriority (..)
+    , ItemField (..)
+    , ItemOrder (..)
+    , ItemOrderOption (..)
+    ) where
 
 import           Data.Text                        (Text)
 import           Data.Text.Extra                  (tshow)
@@ -63,3 +68,29 @@ data ItemField = ItemField
 
 instance FromRow ItemField where
     fromRow = ItemField <$> field <*> field <*> field <*> field <*> field <*> field
+
+data ItemOrder = DefaultOrder deriving (Show, Eq)
+
+instance Localisable ItemOrder where
+    localise DefaultOrder English  = "Default"
+    localise DefaultOrder Japanese = "デフォルト"
+
+instance FromField ItemOrder where
+    fromField (Field (SQLText "DefaultOrder") _) = pure DefaultOrder
+    fromField (Field x _) = fail (printf "Unrecognisable order: '%s'" (show x))
+
+instance ToField ItemOrder where
+    toField = SQLText . tshow
+
+instance TRead ItemOrder where
+    tReadMaybe "DefaultOrder" = Just DefaultOrder
+    tReadMaybe _              = Nothing
+
+data ItemOrderOption = ItemOrderOption
+    { shouldHideDoneItems :: Bool
+    , itemOrder           :: ItemOrder
+    }
+    deriving Show
+
+instance FromRow ItemOrderOption where
+    fromRow = ItemOrderOption <$> field <*> field

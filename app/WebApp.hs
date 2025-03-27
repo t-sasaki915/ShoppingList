@@ -26,7 +26,7 @@ constructWebApp appConfig content = do
     doctype_
     html_ [lang_ (htmlLanguageCode language)] $ do
         head_ $ do
-            title_ [] (toHtml $ localise AppTitle language)
+            title_ [] (localiseHtml AppTitle language)
             meta_ [charset_ "UTF-8"]
             meta_ [name_ "viewport", content_ "width=device-width,initial-scale=1"]
             link_ [rel_ "stylesheet", href_ "style.css"]

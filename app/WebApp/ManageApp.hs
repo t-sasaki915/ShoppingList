@@ -7,7 +7,8 @@ import           Data.Text              (pack)
 import           Database               (getAllItems)
 import           Database.SQLite.Simple (Connection)
 import           Item                   (ItemField (..))
-import           Localisation
+import           Localisation           (AppTitle (..), ButtonLabel (..),
+                                         Label (..), Localisable (..))
 import           Lucid
 import qualified Network.HTTP.Types     as HTypes
 import qualified Network.Wai            as Wai
@@ -27,28 +28,28 @@ manageAppHtml appConfig database = do
 
     return $ do
         div_ [class_ "mainAppHeader"] $ do
-            span_ [class_ "mainAppHeaderText"] (toHtml $ localise AppTitle language)
-            a_ [class_ "button noVerticalMargin", href_ "/", style_ "float: right;"] (toHtml $ localise ViewButtonLabel language)
-            a_ [class_ "button noVerticalMargin", href_ "/add", style_ "float: right;"] (toHtml $ localise AddButtonLabel language)
+            span_ [class_ "mainAppHeaderText"] (localiseHtml AppTitle language)
+            a_ [class_ "button noVerticalMargin", href_ "/", style_ "float: right;"] (localiseHtml ViewButtonLabel language)
+            a_ [class_ "button noVerticalMargin", href_ "/add", style_ "float: right;"] (localiseHtml AddButtonLabel language)
         div_ [class_ "shoppingList"] $
             table_ [] $ do
                 tr_ [] $ do
-                    th_ [] (toHtml $ localise NameLabel language)
-                    th_ [style_ "width: 4em;"] (toHtml $ localise AmountLabel language)
-                    th_ [style_ "width: 4.5em;"] (toHtml $ localise PriorityLabel language)
-                    th_ [style_ "width: 7em;"] (toHtml $ localise NotesLabel language)
-                    th_ [style_ "width: 5em;"] (toHtml $ localise OperationLabel language)
+                    th_ [] (localiseHtml NameLabel language)
+                    th_ [style_ "width: 4em;"] (localiseHtml AmountLabel language)
+                    th_ [style_ "width: 4.5em;"] (localiseHtml PriorityLabel language)
+                    th_ [style_ "width: 7em;"] (localiseHtml NotesLabel language)
+                    th_ [style_ "width: 5em;"] (localiseHtml OperationLabel language)
                 forM_ items $ \item ->
                     tr_ [] $ do
                         td_ [class_ "leftAlign"] (toHtml $ itemName item)
                         td_ [class_ "centreAlign"] (toHtml $ show $ itemAmount item)
-                        td_ [class_ "centreAlign"] (toHtml $ localise (itemPriority item) language)
+                        td_ [class_ "centreAlign"] (localiseHtml (itemPriority item) language)
                         td_ [class_ "leftAlign"] (toHtml $ fromMaybe "" (itemNotes item))
                         td_ [class_ "centreAlign"] $ do
                             let delScript = printf
                                     "window.location.replace('/modify?op=delete&id=%d&after='+encodeURIComponent(window.location.href)+'&n='+new Date().getTime());"
                                     (itemId item)
 
-                            a_ [class_ "button noHorizontalMargin", href_ (pack $ printf "/edit?id=%d" (itemId item))] (toHtml $ localise EditButtonLabel language)
+                            a_ [class_ "button noHorizontalMargin", href_ (pack $ printf "/edit?id=%d" (itemId item))] (localiseHtml EditButtonLabel language)
                             br_ []
-                            a_ [class_ "button noHorizontalMargin", href_ "#", onclick_ (pack delScript)] (toHtml $ localise DeleteButtonLabel language)
+                            a_ [class_ "button noHorizontalMargin", href_ "#", onclick_ (pack delScript)] (localiseHtml DeleteButtonLabel language)

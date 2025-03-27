@@ -8,7 +8,8 @@ import           Data.Text.TRead        (TRead (..))
 import           Database               (getItem)
 import           Database.SQLite.Simple (Connection)
 import           Item                   (ItemField (..), ItemPriority (..))
-import           Localisation
+import           Localisation           (AppTitle (..), ButtonLabel (..),
+                                         Label (..), Localisable (..))
 import           Lucid
 import qualified Network.HTTP.Types     as HTypes
 import qualified Network.Wai            as Wai
@@ -50,16 +51,16 @@ editAppHtml appConfig database iid = do
             , "}"
             ]
         div_ [class_ "mainAppHeader"] $ do
-            span_ [class_ "mainAppHeaderText"] (toHtml $ localise AppTitle language)
-            a_ [class_ "button noVerticalMargin", href_ "#", style_ "float: right;", onclick_ "apply();"] (toHtml $ localise DoneButtonLabel language)
-            a_ [class_ "button noVerticalMargin", href_ "/manage", style_ "float: right;"] (toHtml $ localise CancelButtonLabel language)
+            span_ [class_ "mainAppHeaderText"] (localiseHtml AppTitle language)
+            a_ [class_ "button noVerticalMargin", href_ "#", style_ "float: right;", onclick_ "apply();"] (localiseHtml DoneButtonLabel language)
+            a_ [class_ "button noVerticalMargin", href_ "/manage", style_ "float: right;"] (localiseHtml CancelButtonLabel language)
         div_ [class_ "shoppingList"] $
             table_ [] $ do
                 tr_ [] $ do
-                    th_ [] (toHtml $ localise NameLabel language)
-                    th_ [style_ "width: 5em;"] (toHtml $ localise AmountLabel language)
-                    th_ [style_ "width: 5em;"] (toHtml $ localise PriorityLabel language)
-                    th_ [style_ "width: 9em;"] (toHtml $ localise NotesLabel language)
+                    th_ [] (localiseHtml NameLabel language)
+                    th_ [style_ "width: 5em;"] (localiseHtml AmountLabel language)
+                    th_ [style_ "width: 5em;"] (localiseHtml PriorityLabel language)
+                    th_ [style_ "width: 9em;"] (localiseHtml NotesLabel language)
                 tr_ [] $ do
                     td_ [class_ "leftAlign"] $
                         input_ [type_ "text", value_ (itemName item), class_ "itemDataInput", id_ "itemName"]
@@ -69,8 +70,8 @@ editAppHtml appConfig database iid = do
                         select_ [class_ "itemDataInput"] $ do
                             let p = itemPriority item
 
-                            option_ (id_ "priorityHigh" : [selected_ "true" | p == High]) (toHtml $ localise High language)
-                            option_ (id_ "priorityNormal" : [selected_ "true" | p == Normal]) (toHtml $ localise Normal language)
-                            option_ (id_ "priorityLow" : [selected_ "true" | p == Low]) (toHtml $ localise Low language)
+                            option_ (id_ "priorityHigh" : [selected_ "true" | p == High]) (localiseHtml High language)
+                            option_ (id_ "priorityNormal" : [selected_ "true" | p == Normal]) (localiseHtml Normal language)
+                            option_ (id_ "priorityLow" : [selected_ "true" | p == Low]) (localiseHtml Low language)
                     td_ [class_ "leftAlign"] $
                         input_ [type_ "text", value_ (fromMaybe "" (itemNotes item)), class_ "itemDataInput", id_ "itemNotes"]

@@ -51,7 +51,7 @@ editAppHtml appConfig database iid = do
             , "}"
             ]
         div_ [class_ "mainAppHeader"] $ do
-            span_ [class_ "mainAppHeaderText"] (localiseHtml AppTitle language)
+            localiseHtml AppTitle language
             a_ [class_ "button noVerticalMargin", href_ "#", style_ "float: right;", onclick_ "apply();"] (localiseHtml DoneButtonLabel language)
             a_ [class_ "button noVerticalMargin", href_ "/manage", style_ "float: right;"] (localiseHtml CancelButtonLabel language)
         div_ [class_ "shoppingList"] $

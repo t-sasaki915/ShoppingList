@@ -28,7 +28,7 @@ manageAppHtml appConfig database = do
 
     return $ do
         div_ [class_ "mainAppHeader"] $ do
-            span_ [class_ "mainAppHeaderText"] (localiseHtml AppTitle language)
+            localiseHtml AppTitle language
             a_ [class_ "button noVerticalMargin", href_ "/", style_ "float: right;"] (localiseHtml ViewButtonLabel language)
             a_ [class_ "button noVerticalMargin", href_ "/add", style_ "float: right;"] (localiseHtml AddButtonLabel language)
         div_ [class_ "shoppingList"] $

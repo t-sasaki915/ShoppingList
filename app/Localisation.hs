@@ -69,19 +69,22 @@ data Label = DoneLabel
            | PriorityLabel
            | NotesLabel
            | OperationLabel
+           | HideDoneItemsLabel
 
 instance Localisable Label where
     localise x English = case x of
-        DoneLabel      -> "Done"
-        NameLabel      -> "Name"
-        AmountLabel    -> "Amount"
-        PriorityLabel  -> "Priority"
-        NotesLabel     -> "Notes"
-        OperationLabel -> "Operation"
+        DoneLabel          -> "Done"
+        NameLabel          -> "Name"
+        AmountLabel        -> "Amount"
+        PriorityLabel      -> "Priority"
+        NotesLabel         -> "Notes"
+        OperationLabel     -> "Operation"
+        HideDoneItemsLabel -> "Hide done items"
     localise x Japanese = case x of
-        DoneLabel      -> "完了"
-        NameLabel      -> "名称"
-        AmountLabel    -> "個数"
-        PriorityLabel  -> "重要性"
-        NotesLabel     -> "備考"
-        OperationLabel -> "操作"
+        DoneLabel          -> "完了"
+        NameLabel          -> "名称"
+        AmountLabel        -> "個数"
+        PriorityLabel      -> "重要性"
+        NotesLabel         -> "備考"
+        OperationLabel     -> "操作"
+        HideDoneItemsLabel -> "完了済みを隠す"

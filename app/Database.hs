@@ -9,6 +9,7 @@ module Database
     , addItem
     , getItem
     , getItemOrderOption
+    , updateShouldHideDoneItems
     ) where
 
 import           Data.Functor           ((<&>))
@@ -57,4 +58,8 @@ getItem database iid =
 
 getItemOrderOption :: Connection -> IO ItemOrderOption
 getItemOrderOption database =
-    query_ database "SELECT hide_done_items, item_order FROM user_setting WHERE name = 'order_options'" <&> head
+    query_ database "SELECT hide_done_items, item_order FROM user_setting" <&> head
+
+updateShouldHideDoneItems :: Connection -> Bool -> IO ()
+updateShouldHideDoneItems database newBool =
+    execute database "UPDATE user_setting SET hide_done_items = ?" (Only newBool)

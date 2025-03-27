@@ -55,6 +55,13 @@ modifyApp _ database req send = do
 
                                 redirect afterUrl
 
+            "setting" -> do
+                let newShouldHideDoneItems = tReadMaybe =<< lookupQuery "hide_done_items" queryMap
+
+                forM_ newShouldHideDoneItems (DB.updateShouldHideDoneItems database)
+
+                redirect afterUrl
+
             _ ->
                 return $ Wai.responseBuilder HTypes.status400 [] "INVALID REQUEST!"
 

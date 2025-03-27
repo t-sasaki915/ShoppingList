@@ -38,8 +38,12 @@ mainAppHtml appConfig database = do
             localiseHtml AppTitle language
             a_ [class_ "button noVerticalMargin", href_ "/manage", style_ "float: right;"] (localiseHtml ManageButtonLabel language)
         div_ [class_ "orderOptions"] $ do
-            div_ [class_ "shoppingListCheckbox smaller", style_ "float: left; margin: calc((5vw - 4vw) / 2);"] $ do
-                input_ [type_ "checkbox", id_ "hideDoneItems"]
+            let clickScript = printf
+                    "window.location.replace('/modify?op=setting&hide_done_items=%s&after='+encodeURIComponent(window.location.href)+'&n='+new Date().getTime());"
+                    (show $ not $ shouldHideDoneItems orderOpts)
+
+            div_ [class_ "shoppingListCheckbox smaller", style_ "float: left; margin: calc((5vw - 4vw) / 2);", onclick_ (pack clickScript)] $ do
+                input_ ([type_ "checkbox", id_ "hideDoneItems"] ++ [checked_ | shouldHideDoneItems orderOpts])
                 label_ [for_ "hideDoneItems"] ""
             label_ [class_ "centredText", for_ "hideDoneItems"] (localiseHtml HideDoneItemsLabel language)
         div_ [class_ "shoppingList"] $

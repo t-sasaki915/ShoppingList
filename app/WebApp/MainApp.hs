@@ -34,7 +34,7 @@ mainAppHtml appConfig database = do
             div_ [class_ "shoppingListCheckbox smaller", style_ "float: left; margin: calc((5vw - 4vw) / 2);"] $ do
                 input_ [type_ "checkbox", id_ "hideDoneItems"]
                 label_ [for_ "hideDoneItems"] ""
-            span_ [class_ "centredText"] (localiseHtml HideDoneItemsLabel language)
+            label_ [class_ "centredText", for_ "hideDoneItems"] (localiseHtml HideDoneItemsLabel language)
         div_ [class_ "shoppingList"] $
             table_ [] $ do
                 tr_ [] $ do

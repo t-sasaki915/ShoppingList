@@ -3,6 +3,7 @@ module Item
     , ItemField (..)
     , ItemOrder (..)
     , ItemOrderOption (..)
+    , compareItemFieldByPriority
     ) where
 
 import           Data.Text                        (Text)
@@ -68,6 +69,9 @@ data ItemField = ItemField
 
 instance FromRow ItemField where
     fromRow = ItemField <$> field <*> field <*> field <*> field <*> field <*> field
+
+compareItemFieldByPriority :: ItemField -> ItemField -> Ordering
+compareItemFieldByPriority a b = compare (itemPriority b) (itemPriority a)
 
 data ItemOrder = DefaultOrder deriving (Show, Eq)
 

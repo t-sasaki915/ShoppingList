@@ -70,6 +70,7 @@ data Label = DoneLabel
            | NotesLabel
            | OperationLabel
            | HideDoneItemsLabel
+           | SortOptionLabel
 
 instance Localisable Label where
     localise x English = case x of
@@ -80,6 +81,7 @@ instance Localisable Label where
         NotesLabel         -> "Notes"
         OperationLabel     -> "Operation"
         HideDoneItemsLabel -> "Hide done items"
+        SortOptionLabel    -> "Sort: "
     localise x Japanese = case x of
         DoneLabel          -> "完了"
         NameLabel          -> "名称"
@@ -88,3 +90,4 @@ instance Localisable Label where
         NotesLabel         -> "備考"
         OperationLabel     -> "操作"
         HideDoneItemsLabel -> "完了済みを隠す"
+        SortOptionLabel    -> "並び替え: "

@@ -10,13 +10,14 @@ module Database
     , getItem
     , getItemOrderOption
     , updateShouldHideDoneItems
+    , updateItemOrder
     ) where
 
 import           Data.Functor           ((<&>))
 import           Data.Text              (Text)
 import           Database.SQLite.Simple (Connection, Only (..), execute, query,
                                          query_)
-import           Item                   (ItemField, ItemOrderOption,
+import           Item                   (ItemField, ItemOrder, ItemOrderOption,
                                          ItemPriority)
 
 getAllItems :: Connection -> IO [ItemField]
@@ -63,3 +64,7 @@ getItemOrderOption database =
 updateShouldHideDoneItems :: Connection -> Bool -> IO ()
 updateShouldHideDoneItems database newBool =
     execute database "UPDATE user_setting SET hide_done_items = ?" (Only newBool)
+
+updateItemOrder :: Connection -> ItemOrder -> IO ()
+updateItemOrder database newItemOrder =
+    execute database "UPDATE user_setting SET item_order = ?" (Only newItemOrder)

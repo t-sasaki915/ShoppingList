@@ -73,22 +73,29 @@ instance FromRow ItemField where
 compareItemFieldByPriority :: ItemField -> ItemField -> Ordering
 compareItemFieldByPriority a b = compare (itemPriority b) (itemPriority a)
 
-data ItemOrder = DefaultOrder deriving (Show, Eq)
+data ItemOrder = DefaultOrder
+               | PriorityOrder
+               deriving (Show, Eq)
 
 instance Localisable ItemOrder where
-    localise DefaultOrder English  = "Default"
-    localise DefaultOrder Japanese = "デフォルト"
+    localise DefaultOrder English   = "Default"
+    localise PriorityOrder English  = "By Priority"
+
+    localise DefaultOrder Japanese  = "デフォルト"
+    localise PriorityOrder Japanese = "重要性順"
 
 instance FromField ItemOrder where
-    fromField (Field (SQLText "DefaultOrder") _) = pure DefaultOrder
+    fromField (Field (SQLText "DefaultOrder") _)  = pure DefaultOrder
+    fromField (Field (SQLText "PriorityOrder") _) = pure PriorityOrder
     fromField (Field x _) = fail (printf "Unrecognisable order: '%s'" (show x))
 
 instance ToField ItemOrder where
     toField = SQLText . tshow
 
 instance TRead ItemOrder where
-    tReadMaybe "DefaultOrder" = Just DefaultOrder
-    tReadMaybe _              = Nothing
+    tReadMaybe "DefaultOrder"  = Just DefaultOrder
+    tReadMaybe "PriorityOrder" = Just PriorityOrder
+    tReadMaybe _               = Nothing
 
 data ItemOrderOption = ItemOrderOption
     { shouldHideDoneItems :: Bool

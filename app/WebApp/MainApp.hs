@@ -2,11 +2,14 @@ module WebApp.MainApp (mainApp) where
 
 import           AppConfig              (AppConfig (..))
 import           Control.Monad          (forM_)
+import           Data.List              (sortBy)
 import           Data.Maybe             (fromMaybe)
 import           Data.Text              (pack)
 import           Database               (getAllItems, getItemOrderOption)
 import           Database.SQLite.Simple (Connection)
-import           Item                   (ItemField (..), ItemOrderOption (..))
+import           Item                   (ItemField (..), ItemOrder (..),
+                                         ItemOrderOption (..),
+                                         compareItemFieldByPriority)
 import           Localisation           (AppTitle (..), ButtonLabel (..),
                                          Label (..), Localisable (..))
 import           Lucid
@@ -32,8 +35,17 @@ mainAppHtml appConfig database = do
                 filter (not . itemIsFinished) items
             else
                 items
+        sortedItems =
+            case itemOrder orderOpts of
+                DefaultOrder  -> itemsToShow
+                PriorityOrder -> sortBy compareItemFieldByPriority itemsToShow
 
     return $ do
+        script_ $ pack $ unlines
+            [ "function orderChanged(value) {"
+            , "  window.location.replace(`/modify?op=setting&item_order=${value}&after=${encodeURIComponent(window.location.href)}&n=${new Date().getTime()}`);"
+            , "}"
+            ]
         div_ [class_ "mainAppHeader"] $ do
             localiseHtml AppTitle language
             a_ [class_ "button noVerticalMargin", href_ "/manage", style_ "float: right;"] (localiseHtml ManageButtonLabel language)
@@ -46,6 +58,13 @@ mainAppHtml appConfig database = do
                 input_ ([type_ "checkbox", id_ "hideDoneItems"] ++ [checked_ | shouldHideDoneItems orderOpts])
                 label_ [for_ "hideDoneItems"] ""
             label_ [class_ "centredText", for_ "hideDoneItems"] (localiseHtml HideDoneItemsLabel language)
+            div_ [class_ "spacer"] ""
+            label_ [class_ "centredText"] (localiseHtml SortOptionLabel language)
+            select_ [class_ "selector", onchange_ "orderChanged(value);"] $ do
+                let orderIs = (==) (itemOrder orderOpts)
+
+                option_ (value_ "DefaultOrder" : [selected_ "" | orderIs DefaultOrder]) (localiseHtml DefaultOrder language)
+                option_ (value_ "PriorityOrder" : [selected_ "" | orderIs PriorityOrder]) (localiseHtml PriorityOrder language)
         div_ [class_ "shoppingList"] $
             table_ [] $ do
                 tr_ [] $ do
@@ -54,7 +73,7 @@ mainAppHtml appConfig database = do
                     th_ [style_ "width: 4em;"] (localiseHtml AmountLabel language)
                     th_ [style_ "width: 4.5em;"] (localiseHtml PriorityLabel language)
                     th_ [style_ "width: 8em;"] (localiseHtml NotesLabel language)
-                forM_ itemsToShow $ \item ->
+                forM_ sortedItems $ \item ->
                     tr_ [] $ do
                         let clickScript = printf
                                 "window.location.replace('/modify?op=update&id=%d&is_finished=%s&after='+encodeURIComponent(window.location.href)+'&n='+new Date().getTime());"

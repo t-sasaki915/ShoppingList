@@ -140,3 +140,12 @@ tr:nth-child(even) {
     height: 100%;
     font-size: 3vw;
 }
+
+.spacer {
+    display: inline-block;
+    width: 3vw;
+}
+
+.selector {
+    font-size: 3vw;
+}

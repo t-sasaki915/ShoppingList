@@ -57,8 +57,10 @@ modifyApp _ database req send = do
 
             "setting" -> do
                 let newShouldHideDoneItems = tReadMaybe =<< lookupQuery "hide_done_items" queryMap
+                    newItemOrder = tReadMaybe =<< lookupQuery "item_order" queryMap
 
                 forM_ newShouldHideDoneItems (DB.updateShouldHideDoneItems database)
+                forM_ newItemOrder (DB.updateItemOrder database)
 
                 redirect afterUrl
 

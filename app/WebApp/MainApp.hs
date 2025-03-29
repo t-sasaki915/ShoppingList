@@ -51,7 +51,7 @@ mainAppHtml appConfig database = do
             a_ [class_ "button noVerticalMargin", href_ "/manage", style_ "float: right;"] (localiseHtml ManageButtonLabel language)
         div_ [class_ "orderOptions"] $ do
             let clickScript = printf
-                    "window.location.replace('/modify?op=setting&hide_done_items=%s&after='+encodeURIComponent(window.location.href)+'&n='+new Date().getTime());"
+                    "window.location.replace(`/modify?op=setting&hide_done_items=%s&after=${encodeURIComponent(window.location.href)}&n=${new Date().getTime()}`);"
                     (show $ not $ shouldHideDoneItems orderOpts)
 
             div_ [class_ "shoppingListCheckbox smaller", style_ "float: left; margin: calc((5vw - 4vw) / 2);", onclick_ (pack clickScript)] $ do
@@ -76,7 +76,7 @@ mainAppHtml appConfig database = do
                 forM_ sortedItems $ \item ->
                     tr_ [] $ do
                         let clickScript = printf
-                                "window.location.replace('/modify?op=update&id=%d&is_finished=%s&after='+encodeURIComponent(window.location.href)+'&n='+new Date().getTime());"
+                                "window.location.replace(`/modify?op=update&id=%d&is_finished=%s&after=${encodeURIComponent(window.location.href)}&n=${new Date().getTime()}`);"
                                 (itemId item)
                                 (show $ not $ itemIsFinished item)
 

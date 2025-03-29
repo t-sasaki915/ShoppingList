@@ -47,7 +47,7 @@ manageAppHtml appConfig database = do
                         td_ [class_ "leftAlign"] (toHtml $ fromMaybe "" (itemNotes item))
                         td_ [class_ "centreAlign"] $ do
                             let delScript = printf
-                                    "window.location.replace('/modify?op=delete&id=%d&after='+encodeURIComponent(window.location.href)+'&n='+new Date().getTime());"
+                                    "window.location.replace(`/modify?op=delete&id=%d&after=${encodeURIComponent(window.location.href)}&n=${new Date().getTime()}`);"
                                     (itemId item)
 
                             a_ [class_ "button noHorizontalMargin", href_ (pack $ printf "/edit?id=%d" (itemId item))] (localiseHtml EditButtonLabel language)

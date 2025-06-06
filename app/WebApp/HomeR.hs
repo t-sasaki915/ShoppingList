@@ -4,22 +4,28 @@ module WebApp.HomeR (getHomeR) where
 
 import           Yesod
 
+import qualified Database            as DB
+import           Database.WebApp     (handleDB)
+import           Item                (pickAndSortItems)
 import           Localisation
 import           Localisation.WebApp (localiseHandler)
-import           WebApp              (WebApp (..))
+import           WebApp              (WebApp (..), defaultWebAppLayout)
 
 getHomeR :: (HandlerFor WebApp) Html
 getHomeR = do
     localiser <- localiseHandler
 
-    defaultLayout $ do
-        setTitle (localiser AppTitle)
+    allItems  <- handleDB DB.getAllItems
+    orderOpts <- handleDB DB.getItemOrderOption
 
-        toWidgetHead
-            [hamlet|
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width,initial-scale=1">
-                <link rel="stylesheet" href="style.css">
-            |]
+    let itemsToShow = pickAndSortItems orderOpts allItems
 
-        [whamlet|#{localiser SortOptionLabel}|]
+    defaultWebAppLayout $ do
+        [whamlet|
+            <div .mainAppHeader>
+                #{localiser AppTitle}
+                <a .button .noVerticalMargin href="/manage" style="float: right;">
+                    #{localiser ManageButtonLabel}
+                \
+            \
+        |]

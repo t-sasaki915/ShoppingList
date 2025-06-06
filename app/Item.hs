@@ -4,8 +4,12 @@ module Item
     , ItemOrder (..)
     , ItemOrderOption (..)
     , compareItemFieldByPriority
+    , sortItemFields
+    , pickAppropriateItems
+    , pickAndSortItems
     ) where
 
+import           Data.List                        (sortBy)
 import           Data.Text                        (Text)
 import qualified Data.Text                        as Text
 import           Data.Text.TRead                  (TRead (..))
@@ -97,6 +101,10 @@ instance TRead ItemOrder where
     tReadMaybe "PriorityOrder" = Just PriorityOrder
     tReadMaybe _               = Nothing
 
+sortItemFields :: ItemOrder -> [ItemField] -> [ItemField]
+sortItemFields DefaultOrder  = id
+sortItemFields PriorityOrder = sortBy compareItemFieldByPriority
+
 data ItemOrderOption = ItemOrderOption
     { shouldHideDoneItems :: Bool
     , itemOrder           :: ItemOrder
@@ -105,3 +113,13 @@ data ItemOrderOption = ItemOrderOption
 
 instance FromRow ItemOrderOption where
     fromRow = ItemOrderOption <$> field <*> field
+
+pickAppropriateItems :: ItemOrderOption -> [ItemField] -> [ItemField]
+pickAppropriateItems orderOpts items
+    | shouldHideDoneItems orderOpts = filter (not . itemIsFinished) items
+    | otherwise                     = items
+
+pickAndSortItems :: ItemOrderOption -> [ItemField] -> [ItemField]
+pickAndSortItems orderOpts =
+    let order = itemOrder orderOpts in
+        sortItemFields order . pickAppropriateItems orderOpts

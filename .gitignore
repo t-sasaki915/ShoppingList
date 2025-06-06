@@ -26,3 +26,5 @@ config.yaml
 database.db
 
 test.html
+
+client_session_key.aes

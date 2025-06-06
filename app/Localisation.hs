@@ -1,7 +1,6 @@
 module Localisation
     ( Language (..)
     , Localisable (..)
-    , htmlLanguageCode
     , AppTitle (..)
     , ButtonLabel (..)
     , Label (..)
@@ -10,15 +9,10 @@ module Localisation
 import           Data.Text   (Text)
 import           Data.Yaml   (FromJSON (..), Value (..))
 import           Text.Printf (printf)
-import           Yesod       (Html, toHtml)
 
 data Language = English
               | Japanese
               deriving Show
-
-htmlLanguageCode :: Language -> Text
-htmlLanguageCode English  = "en"
-htmlLanguageCode Japanese = "ja"
 
 instance FromJSON Language where
     parseJSON (String "English")  = return English
@@ -27,9 +21,6 @@ instance FromJSON Language where
 
 class Localisable a where
     localise :: a -> Language -> Text
-
-    localiseHtml :: a -> Language -> Html
-    localiseHtml a = toHtml . localise a
 
 data AppTitle = AppTitle
 

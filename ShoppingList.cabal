@@ -42,10 +42,12 @@ executable ShoppingList-exe
       AppConfig.Resource
       Database.Initialiser
       Database.Resource
+      WebApp.HomeR
       AppConfig
       Database
       Item
       Localisation
+      WebApp
   autogen-modules:
       Paths_ShoppingList
   hs-source-dirs:
@@ -62,4 +64,4 @@ executable ShoppingList-exe
     , sqlite-simple ==0.4.19.0
     , yesod ==1.6.2.1
   default-language: Haskell2010
-  default-extensions: LambdaCase, OverloadedStrings
+  default-extensions: LambdaCase, OverloadedStrings, QuasiQuotes

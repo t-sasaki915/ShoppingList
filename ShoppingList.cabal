@@ -58,10 +58,8 @@ executable ShoppingList-exe
     , yaml ==0.11.11.2
     , bytestring ==0.12.2.0
     , directory ==1.3.9.0
-    , lucid ==2.11.20250303
     , text ==2.1.2
     , sqlite-simple ==0.4.19.0
     , yesod ==1.6.2.1
-    , yesod-lucid ==0.1
   default-language: Haskell2010
   default-extensions: LambdaCase, OverloadedStrings

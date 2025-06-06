@@ -3,14 +3,7 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/topics/lock_files
 
-packages:
-- completed:
-    hackage: yesod-lucid-0.1@sha256:5b7d725000583b192609c01ca3c6a9f8015d6e2a2be2a03125f65b3911ecdf0c,674
-    pantry-tree:
-      sha256: ef7e32babca468baad210c00d7cca90bc99393377993c15b69ca4dde2af1d86e
-      size: 209
-  original:
-    hackage: yesod-lucid-0.1
+packages: []
 snapshots:
 - completed:
     sha256: e9b93acfb8aaf8ae4869050506553a963a8adba95748cd60356f9ffe64f03345

@@ -8,11 +8,9 @@ module Main (main) where
 import           Data.Functor           ((<&>))
 import           Data.Version           (showVersion)
 import           Database.SQLite.Simple (Connection)
-import           Lucid
 import           Paths_ShoppingList     (version)
 import           Text.Printf            (printf)
 import           Yesod                  hiding (loadConfig)
-import           Yesod.Lucid            (LucidHtml, lucid)
 
 import           AppConfig              (AppConfig (..))
 import           AppConfig.Loader       (loadConfig)
@@ -30,18 +28,20 @@ mkYesod "ShoppingList" [parseRoutes|
 
 instance Yesod ShoppingList
 
-getHomeR :: Handler LucidHtml
+getHomeR :: Handler Html
 getHomeR = do
     interfaceLang <- getYesod <&> interfaceLanguage
 
-    lucid $ const $ do
-        doctype_
-        html_ [lang_ (htmlLanguageCode interfaceLang)] $ do
-            head_ [] $ do
-                meta_ [charset_ "utf-8"]
-                meta_ [name_ "viewport", content_ "width=device-width,initial-scale=1"]
-                link_ [rel_ "stylesheet", href_ "style.css"]
-                title_ (localiseHtml AppTitle interfaceLang)
+    defaultLayout $ do
+        setTitle (localiseHtml AppTitle interfaceLang)
+        setLanguage (htmlLanguageCode interfaceLang)
+
+        toWidgetHead
+            [hamlet|
+                <meta charset="utf-8">
+                <meta name="viewport", content="width=device-width,initial-scale=1">
+                <link rel="stylesheet", href="style.css">
+            |]
 
 main :: IO ()
 main = do

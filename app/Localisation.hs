@@ -9,8 +9,8 @@ module Localisation
 
 import           Data.Text   (Text)
 import           Data.Yaml   (FromJSON (..), Value (..))
-import           Lucid       (HtmlT, ToHtml (..))
 import           Text.Printf (printf)
+import           Yesod       (Html, toHtml)
 
 data Language = English
               | Japanese
@@ -28,8 +28,8 @@ instance FromJSON Language where
 class Localisable a where
     localise :: a -> Language -> Text
 
-    localiseHtml :: Monad m => a -> Language -> HtmlT m ()
-    localiseHtml x = toHtml . localise x
+    localiseHtml :: a -> Language -> Html
+    localiseHtml a = toHtml . localise a
 
 data AppTitle = AppTitle
 

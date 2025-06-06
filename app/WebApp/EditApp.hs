@@ -3,7 +3,7 @@ module WebApp.EditApp (editApp) where
 import           AppConfig              (AppConfig (..))
 import           Data.Maybe             (fromMaybe)
 import           Data.Text              (pack)
-import           Data.Text.Extra        (tshow)
+import qualified Data.Text              as Text
 import           Data.Text.TRead        (TRead (..))
 import           Database               (getItem)
 import           Database.SQLite.Simple (Connection)
@@ -65,7 +65,7 @@ editAppHtml appConfig database iid = do
                     td_ [class_ "leftAlign"] $
                         input_ [type_ "text", value_ (itemName item), class_ "itemDataInput", id_ "itemName"]
                     td_ [class_ "centreAlign"] $
-                        input_ [type_ "number", value_ (tshow $ itemAmount item), class_ "itemDataInput", min_ "1", id_ "itemAmount"]
+                        input_ [type_ "number", value_ (Text.show $ itemAmount item), class_ "itemDataInput", min_ "1", id_ "itemAmount"]
                     td_ [class_ "centreAlign"] $
                         select_ [class_ "itemDataInput"] $ do
                             let p = itemPriority item

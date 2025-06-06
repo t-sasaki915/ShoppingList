@@ -7,7 +7,7 @@ module Item
     ) where
 
 import           Data.Text                        (Text)
-import           Data.Text.Extra                  (tshow)
+import qualified Data.Text                        as Text
 import           Data.Text.TRead                  (TRead (..))
 import           Database.SQLite.Simple           (FromRow (..), SQLData (..),
                                                    field)
@@ -36,7 +36,7 @@ instance FromField ItemPriority where
     fromField (Field x _)                  = fail (printf "Unrecognisable priority: '%s'" (show x))
 
 instance ToField ItemPriority where
-    toField = SQLText . tshow
+    toField = SQLText . Text.show
 
 instance TRead ItemPriority where
     tReadMaybe "High"   = Just High
@@ -90,7 +90,7 @@ instance FromField ItemOrder where
     fromField (Field x _) = fail (printf "Unrecognisable order: '%s'" (show x))
 
 instance ToField ItemOrder where
-    toField = SQLText . tshow
+    toField = SQLText . Text.show
 
 instance TRead ItemOrder where
     tReadMaybe "DefaultOrder"  = Just DefaultOrder

@@ -2,32 +2,27 @@
 
 module WebApp.HomeR (getHomeR) where
 
+import           Data.Functor        ((<&>))
 import           Data.Maybe          (fromMaybe)
 import           Data.Text           (pack)
 import           Text.Printf         (printf)
-import           Yesod
+import           Yesod               (HandlerFor, Html, whamlet)
 
 import qualified Database            as DB
 import           Database.WebApp     (handleDB)
-import           Item
+import           Item                (ItemField (..), ItemOrderOption (..),
+                                      allItemOrders, pickAndSortItems)
 import           Localisation
 import           Localisation.WebApp (localiseHandler)
-import           WebApp              (WebApp (..), defaultWebAppLayout)
+import           WebApp              (Route (OrderOptionUpdateR), WebApp (..),
+                                      defaultWebAppLayout)
 
 getHomeR :: (HandlerFor WebApp) Html
 getHomeR = do
     localiser <- localiseHandler
 
-    allItems  <- handleDB DB.getAllItems
-    orderOpts <- handleDB DB.getItemOrderOption
-
-    let itemsToShow = pickAndSortItems orderOpts allItems
-
-        shouldHideDoneItems' = shouldHideDoneItems orderOpts
-
-        isOrder = (==) (itemOrder orderOpts)
-        isOrderDefault    = isOrder DefaultOrder
-        isOrderByPriority = isOrder PriorityOrder
+    orderOpts   <- handleDB DB.getItemOrderOption
+    itemsToShow <- handleDB DB.getAllItems <&> pickAndSortItems orderOpts
 
     defaultWebAppLayout $ do
         [whamlet|
@@ -39,61 +34,35 @@ getHomeR = do
 
         [whamlet|
             <div .orderOptions>
-                <div .shoppingListCheckbox .smaller style="float: left; margin: calc((5vw - 4vw) / 2)">
-                    <input type="checkbox" #hideDoneItems :shouldHideDoneItems':checked>
-                    <label for="hideDoneItems">
-                \
-                <label .centredText for="hideDoneItems">
-                    #{localiser HideDoneItemsLabel}
-                \
-                <div .spacer>
-                \
-                <label .centredText>
-                    #{localiser SortOptionLabel}
-                \
-                <select .selector>
-                    <option :isOrderDefault:checked>
-                        #{localiser DefaultOrder}
-                    \
-                    <option :isOrderByPriority:checked>
-                        #{localiser PriorityOrder}
+                <form action=@{OrderOptionUpdateR}>
+                    <div .shoppingListCheckbox .smaller style="float: left; margin: calc((5vw - 4vw) / 2)">
+                        <input .submitOnChange name="hideDoneItems" type="checkbox" #hideDoneItems :shouldHideDoneItems orderOpts:checked>
+                        <label for="hideDoneItems">
+                    <label .centredText for="hideDoneItems">#{localiser HideDoneItemsLabel}
+                    <div .spacer>
+                    <label for="sortOption" .centredText>#{localiser SortOptionLabel}
+                    <select #sortOption name="sortOption" .selector .submitOnChange>
+                        $forall order <- allItemOrders
+                            <option :order == itemOrder orderOpts:selected value=#{show order}>#{localiser order}
         |]
 
         [whamlet|
             <div .shoppingList>
                 <table>
                     <tr>
-                        <th style="width: 2.5em">
-                            #{localiser DoneLabel}
-                        \
-                        <th>
-                            #{localiser NameLabel}
-                        \
-                        <th style="width: 4em">
-                            #{localiser AmountLabel}
-                        \
-                        <th style="width: 4.5em">
-                            #{localiser PriorityLabel}
-                        \
-                        <th style="width: 8em">
-                            #{localiser NotesLabel}
-                        \
-                    \
+                        <th style="width: 2.5em">#{localiser DoneLabel}
+                        <th>#{localiser NameLabel}
+                        <th style="width: 4em">#{localiser AmountLabel}
+                        <th style="width: 4.5em">#{localiser PriorityLabel}
+                        <th style="width: 8em">#{localiser NotesLabel}
+
                     $forall ItemField itemId name amount priority notes isFinished <- itemsToShow
                         <td .centreAlign>
                             <div .shoppingListCheckbox>
                                 <input type="checkbox" ##{pack $ printf "cb%d" itemId} :isFinished:checked>
                                 <label for=#{pack $ printf "cb%d" itemId}>
-                            \
-                            <td .leftAlign>
-                                #{name}
-                            \
-                            <td .centreAlign>
-                                #{amount}
-                            \
-                            <td .centreAlign>
-                                #{localiser priority}
-                            \
-                            <td .leftAlign>
-                                #{fromMaybe "" notes}
+                            <td .leftAlign>#{name}
+                            <td .centreAlign>#{amount}
+                            <td .centreAlign>#{localiser priority}
+                            <td .leftAlign>#{fromMaybe "" notes}
         |]

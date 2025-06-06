@@ -4,6 +4,7 @@ module Item
     , ItemOrder (..)
     , ItemOrderOption (..)
     , compareItemFieldByPriority
+    , allItemOrders
     , sortItemFields
     , pickAppropriateItems
     , pickAndSortItems
@@ -104,6 +105,12 @@ instance TRead ItemOrder where
 sortItemFields :: ItemOrder -> [ItemField] -> [ItemField]
 sortItemFields DefaultOrder  = id
 sortItemFields PriorityOrder = sortBy compareItemFieldByPriority
+
+allItemOrders :: [ItemOrder]
+allItemOrders =
+    [ DefaultOrder
+    , PriorityOrder
+    ]
 
 data ItemOrderOption = ItemOrderOption
     { shouldHideDoneItems :: Bool

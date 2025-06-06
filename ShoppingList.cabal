@@ -42,18 +42,10 @@ executable ShoppingList-exe
       AppConfig.Resource
       Database.Initialiser
       Database.Resource
-      WebApp.AddApp
-      WebApp.EditApp
-      WebApp.MainApp
-      WebApp.ManageApp
-      WebApp.ModifyApp
-      WebServer.Resource
       AppConfig
       Database
       Item
       Localisation
-      WebApp
-      WebServer
   autogen-modules:
       Paths_ShoppingList
   hs-source-dirs:

@@ -30,9 +30,9 @@ instance Localisable ItemPriority where
     localise Low Japanese    = "低"
 
 instance FromField ItemPriority where
-    fromField (Field (SQLText "High") _)   = pure High
-    fromField (Field (SQLText "Normal") _) = pure Normal
-    fromField (Field (SQLText "Low") _)    = pure Low
+    fromField (Field (SQLText "High") _)   = return High
+    fromField (Field (SQLText "Normal") _) = return Normal
+    fromField (Field (SQLText "Low") _)    = return Low
     fromField (Field x _)                  = fail (printf "Unrecognisable priority: '%s'" (show x))
 
 instance ToField ItemPriority where
@@ -85,8 +85,8 @@ instance Localisable ItemOrder where
     localise PriorityOrder Japanese = "重要性順"
 
 instance FromField ItemOrder where
-    fromField (Field (SQLText "DefaultOrder") _)  = pure DefaultOrder
-    fromField (Field (SQLText "PriorityOrder") _) = pure PriorityOrder
+    fromField (Field (SQLText "DefaultOrder") _)  = return DefaultOrder
+    fromField (Field (SQLText "PriorityOrder") _) = return PriorityOrder
     fromField (Field x _) = fail (printf "Unrecognisable order: '%s'" (show x))
 
 instance ToField ItemOrder where

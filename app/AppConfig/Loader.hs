@@ -16,6 +16,7 @@ readConfigFile filePath =
         True -> do
             putStrLn $ printf "Acquired '%s' as the configuration." filePath
             BS.readFile filePath
+
         False -> do
             putStrLn $ printf "Could not find '%s'. Creating..." filePath
             writeDefaultConfigFile filePath

@@ -21,8 +21,8 @@ htmlLanguageCode English  = "en"
 htmlLanguageCode Japanese = "ja"
 
 instance FromJSON Language where
-    parseJSON (String "English")  = pure English
-    parseJSON (String "Japanese") = pure Japanese
+    parseJSON (String "English")  = return English
+    parseJSON (String "Japanese") = return Japanese
     parseJSON x                   = fail (printf "Unrecognisable language '%s'." (show x))
 
 class Localisable a where
@@ -54,6 +54,7 @@ instance Localisable ButtonLabel where
         AddButtonLabel    -> "Add"
         CancelButtonLabel -> "Cancel"
         DoneButtonLabel   -> "Done"
+
     localise x Japanese = case x of
         EditButtonLabel   -> "編集"
         ManageButtonLabel -> "管理"
@@ -82,6 +83,7 @@ instance Localisable Label where
         OperationLabel     -> "Operation"
         HideDoneItemsLabel -> "Hide done items"
         SortOptionLabel    -> "Sort: "
+
     localise x Japanese = case x of
         DoneLabel          -> "完了"
         NameLabel          -> "名称"

@@ -3,21 +3,7 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/topics/lock_files
 
-packages:
-- completed:
-    hackage: wai-util-0.8@sha256:7181e748ccd405ecef5a586c954acb3d62b55b8eb7368efb5d80d6bf38e8211b,1260
-    pantry-tree:
-      sha256: b80c70adc40b866a4bf6ba0716806efdcce14235e1e6ae69a25cfde679d771e7
-      size: 255
-  original:
-    hackage: wai-util-0.8
-- completed:
-    hackage: http-accept-0.2@sha256:c55935f6ff4984aee96ebc130cc9aa6919d322becb613c049a81203cec9fe65e,1154
-    pantry-tree:
-      sha256: faed5502bca51dd31fdff8277c344278bad508f3e695b6b767530e648a7e00a7
-      size: 262
-  original:
-    hackage: http-accept-0.2
+packages: []
 snapshots:
 - completed:
     sha256: e9b93acfb8aaf8ae4869050506553a963a8adba95748cd60356f9ffe64f03345

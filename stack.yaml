@@ -3,7 +3,3 @@ compiler: ghc-9.12.2
 
 packages:
 - .
-
-extra-deps:
-- wai-util-0.8
-- http-accept-0.2

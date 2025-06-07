@@ -56,10 +56,11 @@ getHomeR = do
                         <th style="width: 8em">#{localiser NotesLabel}
 
                     $forall ItemField itemId name amount priority notes isFinished <- itemsToShow
-                        <td .centreAlign>
-                            <div .shoppingListCheckbox>
-                                <input type="checkbox" ##{pack $ printf "cb%d" itemId} :isFinished:checked>
-                                <label for=#{pack $ printf "cb%d" itemId}>
+                        <tr>
+                            <td .centreAlign>
+                                <div .shoppingListCheckbox>
+                                    <input type="checkbox" ##{pack $ printf "cb%d" itemId} :isFinished:checked>
+                                    <label for=#{pack $ printf "cb%d" itemId}>
                             <td .leftAlign>#{name}
                             <td .centreAlign>#{amount}
                             <td .centreAlign>#{localiser priority}

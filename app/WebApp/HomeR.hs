@@ -16,6 +16,7 @@ import           Localisation
 import           Localisation.WebApp (localiseHandler)
 import           WebApp              (Route (..), WebApp (..),
                                       defaultWebAppLayout)
+import           WebApp.ModifyR      (ModifyAction (UpdateItem))
 
 getHomeR :: (HandlerFor WebApp) Html
 getHomeR = do
@@ -59,8 +60,9 @@ getHomeR = do
                         <tr>
                             <td .centreAlign>
                                 <div .shoppingListCheckbox>
-                                    <input type="checkbox" ##{pack $ printf "cb%d" itemId} :isFinished:checked>
-                                    <label for=#{pack $ printf "cb%d" itemId}>
+                                    <form method="post" action=@{ModifyR itemId UpdateItem HomeR}>
+                                        <input .submitOnChange type="checkbox" ##{pack $ printf "cb%d" itemId} :isFinished:checked name="itemIsFinished">
+                                        <label for=#{pack $ printf "cb%d" itemId}>
                             <td .leftAlign>#{name}
                             <td .centreAlign>#{amount}
                             <td .centreAlign>#{localiser priority}

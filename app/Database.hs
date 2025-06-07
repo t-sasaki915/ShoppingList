@@ -36,7 +36,7 @@ updateItemPriority :: Int -> ItemPriority -> Connection -> IO ()
 updateItemPriority iid newPriority database =
     execute database "UPDATE shopping_list SET priority = ? WHERE id = ?" (newPriority, iid)
 
-updateItemNotes :: Int -> Text -> Connection -> IO ()
+updateItemNotes :: Int -> Maybe Text -> Connection -> IO ()
 updateItemNotes iid newNotes database =
     execute database "UPDATE shopping_list SET notes = ? WHERE id = ?" (newNotes, iid)
 

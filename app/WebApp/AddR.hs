@@ -35,7 +35,7 @@ getAddR = do
                             <th style="width: 9em">#{localiser NotesLabel}
                         <tr>
                             <td .leftAlign>
-                                <input .itemDataInput type="text" value="" name="itemName">
+                                <input .itemDataInput type="text" value="" name="itemName" required>
                             <td .centreAlign>
                                 <input .itemDataInput type="number" value="1" min="1" name="itemAmount">
                             <td .centreAlign>

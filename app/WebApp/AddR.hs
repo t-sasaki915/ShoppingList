@@ -18,21 +18,12 @@ getAddR :: (HandlerFor WebApp) Html
 getAddR = do
     localiser <- localiseHandler
 
-    defaultWebAppLayout $ do
-        toWidgetHead
-            [julius|
-                window.addEventListener("load", () => {
-                    document.getElementById("submitButton").addEventListener("click", () => {
-                        document.getElementById("addForm").submit();
-                    });
-                });
-            |]
-
+    defaultWebAppLayout $
         [whamlet|
-            <form method="post" action=@{AddR} #addForm>
+            <form method="post" action=@{AddR}>
                 <div .mainAppHeader>
                     #{localiser AppTitle}
-                    <a .button .noVerticalMargin style="float: right" #submitButton>#{localiser DoneButtonLabel}
+                    <button .button .noVerticalMargin style="float: right" type="submit">#{localiser DoneButtonLabel}
                     <a .button .noVerticalMargin href=@{ManageR} style="float: right">#{localiser CancelButtonLabel}
 
                 <div .shoppingList>

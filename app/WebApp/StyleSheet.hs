@@ -34,6 +34,7 @@ commonStyleSheet =
 
         .button
             text-decoration: none
+            padding-block: 0
             box-sizing: border-box
             border: 0.2vw solid #000000
             background-color: #FFFFFF

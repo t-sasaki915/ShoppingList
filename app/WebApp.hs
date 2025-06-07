@@ -16,6 +16,7 @@ import                          Yesod
 import                          AppConfig              (AppConfig (..))
 import                          Localisation           (Language)
 import {-# SOURCE #-}           WebApp.HomeR           (getHomeR)
+import {-# SOURCE #-}           WebApp.ManageR         (getManageR)
 import {-# SOURCE #-}           WebApp.SettingUpdateR  (getSettingUpdateR)
 import                          WebApp.StyleSheet      (commonStyleSheet)
 
@@ -26,6 +27,7 @@ data WebApp = WebApp
 
 mkYesod "WebApp" [parseRoutes|
 /               HomeR GET
+/manage         ManageR GET
 /setting/update SettingUpdateR GET
 |]
 
@@ -34,7 +36,7 @@ instance Yesod WebApp
 instance RenderMessage WebApp FormMessage where
     renderMessage _ _ = defaultFormMessage
 
-defaultWebAppLayout :: WidgetFor WebApp () -> Handler Html
+defaultWebAppLayout :: Widget -> Handler Html
 defaultWebAppLayout content =
     defaultLayout $ do
         setTitle "ShoppingList"

@@ -14,7 +14,7 @@ import           Item                (ItemField (..), ItemOrderOption (..),
                                       allItemOrders, pickAndSortItems)
 import           Localisation
 import           Localisation.WebApp (localiseHandler)
-import           WebApp              (Route (SettingUpdateR), WebApp (..),
+import           WebApp              (Route (..), WebApp (..),
                                       defaultWebAppLayout)
 
 getHomeR :: (HandlerFor WebApp) Html
@@ -28,8 +28,7 @@ getHomeR = do
         [whamlet|
             <div .mainAppHeader>
                 #{localiser AppTitle}
-                <a .button .noVerticalMargin href="/manage" style="float: right">
-                    #{localiser ManageButtonLabel}
+                <a .button .noVerticalMargin href=@{ManageR} style="float: right">#{localiser ManageButtonLabel}
         |]
 
         [whamlet|

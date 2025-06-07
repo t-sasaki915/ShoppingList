@@ -12,7 +12,7 @@ import           Localisation
 import           Localisation.WebApp (localiseHandler)
 import           WebApp              (Route (..), WebApp (..),
                                       defaultWebAppLayout)
-import           WebApp.ModifyR      (ModifyAction (..))
+import           WebApp.ModifyR      (ModifyAction (DeleteItem))
 
 getManageR :: (HandlerFor WebApp) Html
 getManageR = do
@@ -45,7 +45,7 @@ getManageR = do
                             <td .centreAlign>#{localiser priority}
                             <td :isJust notes:.leftAlign :isNothing notes:.centreAlign>#{fromMaybe "-" notes}
                             <td .centreAlign>
-                                <a .button .noHorizontalMargin href="#">#{localiser EditButtonLabel}
+                                <a .button .noHorizontalMargin href=@{EditR itemId}>#{localiser EditButtonLabel}
                                 <form method="post" action=@{ModifyR itemId DeleteItem ManageR}>
                                     <button .button .noHorizontalMargin type="submit">#{localiser DeleteButtonLabel}
         |]

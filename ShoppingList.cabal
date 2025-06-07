@@ -45,6 +45,7 @@ executable ShoppingList-exe
       Database.WebApp
       Localisation.WebApp
       WebApp.AddR
+      WebApp.EditR
       WebApp.HomeR
       WebApp.ManageR
       WebApp.ModifyR

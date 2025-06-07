@@ -21,6 +21,7 @@ import                          Yesod
 import                          AppConfig              (AppConfig (..))
 import                          Localisation           (Language)
 import {-# SOURCE #-}           WebApp.AddR            (getAddR, postAddR)
+import {-# SOURCE #-}           WebApp.EditR           (getEditR)
 import {-# SOURCE #-}           WebApp.HomeR           (getHomeR)
 import {-# SOURCE #-}           WebApp.ManageR         (getManageR)
 import {-# SOURCE #-}           WebApp.ModifyR         (ModifyAction,
@@ -39,6 +40,7 @@ mkYesod "WebApp" [parseRoutes|
 /                                               HomeR GET
 /manage                                         ManageR GET
 /manage/add                                     AddR GET POST
+/manage/edit/#Int                               EditR GET
 /manage/modify/#Int/#ModifyAction/#WebAppRoute  ModifyR POST
 /setting/update                                 SettingUpdateR POST
 |]

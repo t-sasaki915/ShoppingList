@@ -3,6 +3,8 @@ module Item
     , ItemField (..)
     , ItemOrder (..)
     , ItemOrderOption (..)
+    , allItemPriorities
+    , defaultItemPriority
     , compareItemFieldByPriority
     , allItemOrders
     , sortItemFields
@@ -61,6 +63,12 @@ instance Ord ItemPriority where
     compare High Normal   = GT
     compare Normal Low    = GT
     compare High Low      = GT
+
+allItemPriorities :: [ItemPriority]
+allItemPriorities = [High, Normal, Low]
+
+defaultItemPriority :: ItemPriority
+defaultItemPriority = Normal
 
 data ItemField = ItemField
     { itemId         :: Int

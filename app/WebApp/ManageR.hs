@@ -2,7 +2,7 @@
 
 module WebApp.ManageR (getManageR) where
 
-import           Data.Maybe          (fromMaybe)
+import           Data.Maybe          (fromMaybe, isJust, isNothing)
 import           Yesod               (HandlerFor, Html, whamlet)
 
 import qualified Database            as DB
@@ -24,7 +24,7 @@ getManageR = do
             <div .mainAppHeader>
                 #{localiser AppTitle}
                 <a .button .noVerticalMargin href=@{HomeR} style="float: right">#{localiser ViewButtonLabel}
-                <a .button .noVerticalMargin href="/add" style="float: right">#{localiser AddButtonLabel}
+                <a .button .noVerticalMargin href=@{AddR} style="float: right">#{localiser AddButtonLabel}
         |]
 
         [whamlet|
@@ -42,7 +42,7 @@ getManageR = do
                             <td .leftAlign>#{name}
                             <td .centreAlign>#{amount}
                             <td .centreAlign>#{localiser priority}
-                            <td .leftAlign>#{fromMaybe "" notes}
+                            <td :isJust notes:.leftAlign :isNothing notes:.centreAlign>#{fromMaybe "-" notes}
                             <td .centreAlign>
                                 <a .button .noHorizontalMargin href="#">#{localiser EditButtonLabel}
                                 <a .button .noHorizontalMargin href="#">#{localiser DeleteButtonLabel}

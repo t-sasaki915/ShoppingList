@@ -48,7 +48,7 @@ deleteItem :: Int -> Connection -> IO ()
 deleteItem iid database =
     execute database "DELETE FROM shopping_list WHERE id = ?" (Only iid)
 
-addItem :: Text -> Int -> ItemPriority -> Text -> Connection -> IO ()
+addItem :: Text -> Int -> ItemPriority -> Maybe Text -> Connection -> IO ()
 addItem newName newAmount newPriority newNotes database =
     execute database
         "INSERT INTO shopping_list (name, amount, priority, notes, is_finished) VALUES (?, ?, ?, ?, 0)"

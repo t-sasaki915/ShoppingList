@@ -3,7 +3,7 @@
 module WebApp.HomeR (getHomeR) where
 
 import           Data.Functor        ((<&>))
-import           Data.Maybe          (fromMaybe)
+import           Data.Maybe          (fromMaybe, isJust, isNothing)
 import           Data.Text           (pack)
 import           Text.Printf         (printf)
 import           Yesod               (HandlerFor, Html, whamlet)
@@ -33,7 +33,7 @@ getHomeR = do
 
         [whamlet|
             <div .orderOptions>
-                <form action=@{SettingUpdateR}>
+                <form method="post" action=@{SettingUpdateR}>
                     <div .shoppingListCheckbox .smaller style="float: left; margin: calc((5vw - 4vw) / 2)">
                         <input .submitOnChange name="shouldHideDoneItems" type="checkbox" #hideDoneItems :shouldHideDoneItems orderOpts:checked>
                         <label for="hideDoneItems">
@@ -63,5 +63,5 @@ getHomeR = do
                             <td .leftAlign>#{name}
                             <td .centreAlign>#{amount}
                             <td .centreAlign>#{localiser priority}
-                            <td .leftAlign>#{fromMaybe "" notes}
+                            <td :isJust notes:.leftAlign :isNothing notes:.centreAlign>#{fromMaybe "-" notes}
         |]

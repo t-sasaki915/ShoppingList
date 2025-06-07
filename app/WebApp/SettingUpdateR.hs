@@ -1,4 +1,4 @@
-module WebApp.SettingUpdateR (getSettingUpdateR) where
+module WebApp.SettingUpdateR (postSettingUpdateR) where
 
 import           Control.Monad.Extra (whenJust)
 import           Data.Text           (Text)
@@ -12,11 +12,11 @@ import           WebApp              (Route (HomeR), WebApp)
 data SettingUpdateRequest = SettingUpdateRequest
     { maybeShouldHideDoneItems :: Maybe Bool
     , maybeItemOrder           :: Maybe Text
-    } deriving Show
+    }
 
-getSettingUpdateR :: (HandlerFor WebApp) ()
-getSettingUpdateR = do
-    request <- runInputGet $ SettingUpdateRequest
+postSettingUpdateR :: (HandlerFor WebApp) ()
+postSettingUpdateR = do
+    request <- runInputPost $ SettingUpdateRequest
         <$> iopt checkBoxField "shouldHideDoneItems"
         <*> iopt textField     "itemOrder"
 

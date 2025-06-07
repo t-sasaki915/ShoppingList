@@ -14,7 +14,7 @@ import           Item                (ItemField (..), ItemOrderOption (..),
                                       allItemOrders, pickAndSortItems)
 import           Localisation
 import           Localisation.WebApp (localiseHandler)
-import           WebApp              (Route (OrderOptionUpdateR), WebApp (..),
+import           WebApp              (Route (SettingUpdateR), WebApp (..),
                                       defaultWebAppLayout)
 
 getHomeR :: (HandlerFor WebApp) Html
@@ -34,14 +34,14 @@ getHomeR = do
 
         [whamlet|
             <div .orderOptions>
-                <form action=@{OrderOptionUpdateR}>
+                <form action=@{SettingUpdateR}>
                     <div .shoppingListCheckbox .smaller style="float: left; margin: calc((5vw - 4vw) / 2)">
-                        <input .submitOnChange name="hideDoneItems" type="checkbox" #hideDoneItems :shouldHideDoneItems orderOpts:checked>
+                        <input .submitOnChange name="shouldHideDoneItems" type="checkbox" #hideDoneItems :shouldHideDoneItems orderOpts:checked>
                         <label for="hideDoneItems">
                     <label .centredText for="hideDoneItems">#{localiser HideDoneItemsLabel}
                     <div .spacer>
                     <label for="sortOption" .centredText>#{localiser SortOptionLabel}
-                    <select #sortOption name="sortOption" .selector .submitOnChange>
+                    <select #sortOption name="itemOrder" .selector .submitOnChange>
                         $forall order <- allItemOrders
                             <option :order == itemOrder orderOpts:selected value=#{show order}>#{localiser order}
         |]

@@ -1,54 +1,88 @@
+{-# LANGUAGE FlexibleInstances     #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE TemplateHaskell       #-}
+{-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE ViewPatterns          #-}
+{-# OPTIONS_GHC -Wno-unused-top-binds #-}
+
 module WebApp
-    ( renderWebApp
-    , transformQuery
-    , lookupQuery
-    , withQuery
+    ( WebApp (..)
+    , Route (..)
+    , defaultWebAppLayout
+    , initialiseWebApp
     ) where
 
-import           AppConfig               (AppConfig (..))
-import           Data.ByteString         (ByteString)
-import           Data.ByteString.Builder (Builder, byteString, lazyByteString)
-import           Data.Functor            ((<&>))
-import qualified Data.Map                as M
-import           Data.Text               (Text, pack)
-import           Data.Text.Encoding      (decodeUtf8Lenient, encodeUtf8)
-import           Localisation            (AppTitle (..), Localisable (..),
-                                          htmlLanguageCode)
-import           Lucid
-import qualified Network.HTTP.Types      as HTypes
-import qualified Network.Wai             as Wai
-import           Text.Printf             (printf)
+import                          Data.Text              (unpack)
+import                qualified Data.Text              as Text
+import                          Database.SQLite.Simple (Connection)
+import                          Network.URI.Encode     (decodeText, encodeText)
+import                          Yesod
 
-constructWebApp :: AppConfig -> Html () -> Html ()
-constructWebApp appConfig content = do
-    let language = webInterfaceLanguage appConfig
+import                          AppConfig              (AppConfig (..))
+import                          Localisation           (Language)
+import {-# SOURCE #-}           WebApp.AddR            (getAddR, postAddR)
+import {-# SOURCE #-}           WebApp.EditR           (getEditR)
+import {-# SOURCE #-}           WebApp.HomeR           (getHomeR)
+import {-# SOURCE #-}           WebApp.ManageR         (getManageR)
+import {-# SOURCE #-}           WebApp.ModifyR         (ModifyAction,
+                                                        postModifyR)
+import {-# SOURCE #-}           WebApp.SettingUpdateR  (postSettingUpdateR)
+import                          WebApp.StyleSheet      (commonStyleSheet)
 
-    doctype_
-    html_ [lang_ (htmlLanguageCode language)] $ do
-        head_ $ do
-            title_ [] (localiseHtml AppTitle language)
-            meta_ [charset_ "UTF-8"]
-            meta_ [name_ "viewport", content_ "width=device-width,initial-scale=1"]
-            link_ [rel_ "stylesheet", href_ "style.css"]
-        body_ content
+data WebApp = WebApp
+    { interfaceLanguage  :: Language
+    , databaseConnection :: Connection
+    }
 
-renderWebApp :: AppConfig -> Html () -> Builder
-renderWebApp appConfig content =
-    lazyByteString $ renderBS (constructWebApp appConfig content)
+type WebAppRoute = Route WebApp
 
-transformQuery :: [(ByteString, Maybe ByteString)] -> M.Map Text (Maybe Text)
-transformQuery = M.fromList . map (\(k, v) -> (decodeUtf8Lenient k, v <&> decodeUtf8Lenient))
+mkYesod "WebApp" [parseRoutes|
+/                                               HomeR GET
+/manage                                         ManageR GET
+/manage/add                                     AddR GET POST
+/manage/edit/#Int                               EditR GET
+/manage/modify/#Int/#ModifyAction/#WebAppRoute  ModifyR POST
+/setting/update                                 SettingUpdateR POST
+|]
 
-lookupQuery :: Text -> M.Map Text (Maybe Text) -> Maybe Text
-lookupQuery k l =
-    case M.lookup k l of
-        Just (Just x) -> Just x
-        _             -> Nothing
+instance Yesod WebApp
 
-withQuery :: Text -> M.Map Text (Maybe Text) -> (Text -> IO Wai.Response) -> IO Wai.Response
-withQuery q l f =
-    case lookupQuery q l of
-        Just x  -> f x
-        Nothing ->
-            return $ Wai.responseBuilder HTypes.status400 []
-                (byteString (encodeUtf8 $ pack $ printf "REQUIRED QUERY '%s' IS MISSING!" q))
+instance RenderMessage WebApp FormMessage where
+    renderMessage _ _ = defaultFormMessage
+
+instance PathPiece (Route WebApp) where
+    fromPathPiece = parseRoute . read . unpack . decodeText
+    toPathPiece = encodeText . Text.show . renderRoute
+
+defaultWebAppLayout :: Widget -> Handler Html
+defaultWebAppLayout content =
+    defaultLayout $ do
+        setTitle "ShoppingList"
+
+        toWidgetHead
+            [hamlet|
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width,initial-scale=1">
+            |]
+
+        toWidgetHead
+            [julius|
+                window.addEventListener("load", () => {
+                    Array
+                        .from(document.getElementsByClassName("submitOnChange"))
+                        .forEach(elem => {
+                            elem.addEventListener("change", () => elem.form.submit());
+                        });
+                });
+            |]
+
+        toWidgetHead commonStyleSheet
+
+        content
+
+initialiseWebApp :: AppConfig -> Connection -> WebApp
+initialiseWebApp appConfig dbConnection =
+    WebApp
+        { interfaceLanguage  = webInterfaceLanguage appConfig
+        , databaseConnection = dbConnection
+        }

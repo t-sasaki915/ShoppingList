@@ -1,11 +1,14 @@
 module Main (main) where
 
-import           AppConfig.Loader     (loadConfig)
 import           Data.Version         (showVersion)
-import           Database.Initialiser (initialiseDatabase)
 import           Paths_ShoppingList   (version)
 import           Text.Printf          (printf)
-import           WebServer            (startWebServer)
+import           Yesod                hiding (loadConfig)
+
+import           AppConfig            (AppConfig (..))
+import           AppConfig.Loader     (loadConfig)
+import           Database.Initialiser (initialiseDatabase)
+import           WebApp               (initialiseWebApp)
 
 main :: IO ()
 main = do
@@ -14,4 +17,5 @@ main = do
     appConfig <- loadConfig "config.yaml"
     database  <- initialiseDatabase "database.db"
 
-    startWebServer appConfig database
+    warp (serverPort appConfig) $
+        initialiseWebApp appConfig database

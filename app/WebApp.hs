@@ -10,14 +10,14 @@ module WebApp
     , initialiseWebApp
     ) where
 
-import                          Database.SQLite.Simple    (Connection)
+import                          Database.SQLite.Simple (Connection)
 import                          Yesod
 
-import                          AppConfig                 (AppConfig (..))
-import                          Localisation              (Language)
-import {-# SOURCE #-}           WebApp.HomeR              (getHomeR)
-import {-# SOURCE #-}           WebApp.SettingUpdateR (getSettingUpdateR)
-import                          WebApp.StyleSheet         (commonStyleSheet)
+import                          AppConfig              (AppConfig (..))
+import                          Localisation           (Language)
+import {-# SOURCE #-}           WebApp.HomeR           (getHomeR)
+import {-# SOURCE #-}           WebApp.SettingUpdateR  (getSettingUpdateR)
+import                          WebApp.StyleSheet      (commonStyleSheet)
 
 data WebApp = WebApp
     { interfaceLanguage  :: Language

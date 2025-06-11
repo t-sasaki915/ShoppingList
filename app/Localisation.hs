@@ -6,9 +6,9 @@ module Localisation
     , Label (..)
     ) where
 
-import           Data.Text   (Text)
-import           Data.Yaml   (FromJSON (..), Value (..))
-import           Text.Printf (printf)
+import           Data.String.Here (i)
+import           Data.Text        (Text)
+import           Data.Yaml        (FromJSON (..), Value (..))
 
 data Language = English
               | Japanese
@@ -17,7 +17,7 @@ data Language = English
 instance FromJSON Language where
     parseJSON (String "English")  = return English
     parseJSON (String "Japanese") = return Japanese
-    parseJSON x                   = fail (printf "Unrecognisable language '%s'." (show x))
+    parseJSON x                   = error [i|Unrecognisable language '${x}'.|]
 
 class Localisable a where
     localise :: a -> Language -> Text

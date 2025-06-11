@@ -1,11 +1,12 @@
 module AppConfig.Loader (loadConfig) where
 
-import           AppConfig          (AppConfig)
-import qualified AppConfig.Resource as Res
 import qualified Data.ByteString    as BS
+import           Data.String.Here   (i)
 import           Data.Yaml          (decodeEither', prettyPrintParseException)
 import           System.Directory   (doesFileExist)
-import           Text.Printf        (printf)
+
+import           AppConfig          (AppConfig)
+import qualified AppConfig.Resource as Res
 
 writeDefaultConfigFile :: FilePath -> IO ()
 writeDefaultConfigFile = flip BS.writeFile Res.defaultConfigFile
@@ -14,11 +15,11 @@ readConfigFile :: FilePath -> IO BS.ByteString
 readConfigFile filePath =
     doesFileExist filePath >>= \case
         True -> do
-            putStrLn $ printf "Acquired '%s' as the configuration." filePath
+            putStrLn [i|Acquired '${filePath}' as the configuration.|]
             BS.readFile filePath
 
         False -> do
-            putStrLn $ printf "Could not find '%s'. Creating..." filePath
+            putStrLn [i|Could not find '${filePath}'. Creating...|]
             writeDefaultConfigFile filePath
             readConfigFile filePath
 

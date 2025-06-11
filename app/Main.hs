@@ -1,8 +1,10 @@
 module Main (main) where
 
+import           Data.String.Here     (i)
+import           Data.Text.IO         (putStrLn)
 import           Data.Version         (showVersion)
 import           Paths_ShoppingList   (version)
-import           Text.Printf          (printf)
+import           Prelude              hiding (putStrLn)
 import           Yesod                hiding (loadConfig)
 
 import           AppConfig            (AppConfig (..))
@@ -12,7 +14,7 @@ import           WebApp               (initialiseWebApp)
 
 main :: IO ()
 main = do
-    putStrLn $ printf "Starting ShoppingList version %s ..." (showVersion version)
+    putStrLn [i|Starting ShoppingList version ${showVersion version} ...|]
 
     appConfig <- loadConfig "config.yaml"
     database  <- initialiseDatabase "database.db"

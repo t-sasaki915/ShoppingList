@@ -32,7 +32,7 @@ library
       base >=4.7 && <5
     , text == 2.1.2
   default-language: Haskell2010
-  default-extensions: LambdaCase, OverloadedStrings
+  default-extensions: LambdaCase, OverloadedStrings, QuasiQuotes
 
 executable ShoppingList-exe
   main-is: Main.hs
@@ -74,5 +74,6 @@ executable ShoppingList-exe
     , shakespeare ==2.1.0.1
     , extra ==1.8
     , uri-encode ==1.5.0.7
+    , here ==1.2.14
   default-language: Haskell2010
   default-extensions: LambdaCase, OverloadedStrings, QuasiQuotes

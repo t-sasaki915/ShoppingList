@@ -1,10 +1,11 @@
 module Database.Initialiser (initialiseDatabase) where
 
 import qualified Data.ByteString        as BS
-import qualified Database.Resource      as Res
+import           Data.String.Here       (i)
 import           Database.SQLite.Simple (Connection, open)
 import           System.Directory       (doesFileExist)
-import           Text.Printf            (printf)
+
+import qualified Database.Resource      as Res
 
 writeDefaultDatabaseFile :: FilePath -> IO ()
 writeDefaultDatabaseFile = flip BS.writeFile Res.defaultDatabaseFile
@@ -13,10 +14,10 @@ initialiseDatabase :: FilePath -> IO Connection
 initialiseDatabase filePath =
     doesFileExist filePath >>= \case
         True -> do
-            putStrLn $ printf "Acquired '%s' as the database." filePath
+            putStrLn [i|Acquired '${filePath}' as the database.|]
             open filePath
 
         False -> do
-            putStrLn $ printf "Could not find '%s'. Creating..." filePath
+            putStrLn [i|Could not find '${filePath}'. Creating...|]
             writeDefaultDatabaseFile filePath
             initialiseDatabase filePath

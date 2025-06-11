@@ -13,6 +13,7 @@ module Item
     ) where
 
 import           Data.List                        (sortBy)
+import           Data.String.Here                 (i)
 import           Data.Text                        (Text)
 import qualified Data.Text                        as Text
 import           Data.Text.TRead                  (TRead (..))
@@ -21,9 +22,9 @@ import           Database.SQLite.Simple           (FromRow (..), SQLData (..),
 import           Database.SQLite.Simple.FromField (FromField (..))
 import           Database.SQLite.Simple.Internal  (Field (..))
 import           Database.SQLite.Simple.ToField   (ToField (..))
+
 import           Localisation                     (Language (..),
                                                    Localisable (..))
-import           Text.Printf                      (printf)
 
 data ItemPriority = High | Normal | Low deriving (Show, Eq)
 
@@ -40,7 +41,7 @@ instance FromField ItemPriority where
     fromField (Field (SQLText "High") _)   = return High
     fromField (Field (SQLText "Normal") _) = return Normal
     fromField (Field (SQLText "Low") _)    = return Low
-    fromField (Field x _)                  = fail (printf "Unrecognisable priority: '%s'" (show x))
+    fromField (Field x _)                  = fail [i|Unrecognisable priority: '${x}'|]
 
 instance ToField ItemPriority where
     toField = SQLText . Text.show
@@ -100,7 +101,7 @@ instance Localisable ItemOrder where
 instance FromField ItemOrder where
     fromField (Field (SQLText "DefaultOrder") _)  = return DefaultOrder
     fromField (Field (SQLText "PriorityOrder") _) = return PriorityOrder
-    fromField (Field x _) = fail (printf "Unrecognisable order: '%s'" (show x))
+    fromField (Field x _) = fail [i|Unrecognisable order: '${x}'|]
 
 instance ToField ItemOrder where
     toField = SQLText . Text.show

@@ -4,8 +4,6 @@ module WebApp.HomeR (getHomeR) where
 
 import           Data.Functor        ((<&>))
 import           Data.Maybe          (fromMaybe, isJust, isNothing)
-import           Data.Text           (pack)
-import           Text.Printf         (printf)
 import           Yesod               (HandlerFor, Html, whamlet)
 
 import qualified Database            as DB
@@ -61,8 +59,9 @@ getHomeR = do
                             <td .centreAlign>
                                 <div .shoppingListCheckbox>
                                     <form method="post" action=@{ModifyR itemId UpdateItem HomeR}>
-                                        <input .submitOnChange type="checkbox" ##{pack $ printf "cb%d" itemId} :isFinished:checked name="itemIsFinished">
-                                        <label for=#{pack $ printf "cb%d" itemId}>
+                                        $with checkBoxId <- "cb" ++ show itemId
+                                            <input .submitOnChange type="checkbox" ##{checkBoxId} :isFinished:checked name="itemIsFinished">
+                                            <label for=#{checkBoxId}>
                             <td .leftAlign>#{name}
                             <td .centreAlign>#{amount}
                             <td .centreAlign>#{localiser priority}

@@ -15,8 +15,8 @@ data Language = English
               deriving Show
 
 instance FromJSON Language where
-    parseJSON (String "English")  = return English
-    parseJSON (String "Japanese") = return Japanese
+    parseJSON (String "English")  = pure English
+    parseJSON (String "Japanese") = pure Japanese
     parseJSON x                   = error [i|Unrecognisable language '${x}'.|]
 
 class Localisable a where

@@ -27,5 +27,5 @@ loadConfig :: FilePath -> IO AppConfig
 loadConfig filePath = do
     rawConfig <- readConfigFile filePath
     case decodeEither' rawConfig of
-        Right conf -> return conf
+        Right conf -> pure conf
         Left err   -> error (prettyPrintParseException err)

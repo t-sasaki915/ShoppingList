@@ -9,4 +9,4 @@ import           Localisation (Localisable (..))
 import           WebApp       (WebApp (interfaceLanguage))
 
 localiseHandler :: (HandlerFor WebApp) (forall a. Localisable a => a -> Html)
-localiseHandler = getYesod <&> interfaceLanguage >>= \lang -> return $ toHtml . flip localise lang
+localiseHandler = getYesod <&> interfaceLanguage >>= \lang -> pure $ toHtml . flip localise lang

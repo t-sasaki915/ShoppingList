@@ -26,6 +26,6 @@ instance FromJSON AppConfig where
             <$> m .:? "serverPort"           .!= Res.defaultServerPort
             <*> m .:? "webInterfaceLanguage" .!= Res.defaultWebInterfaceLanguage
 
-    parseJSON Null = return defaultAppConfig
+    parseJSON Null = pure defaultAppConfig
 
     parseJSON _ = fail "Unrecognisable config"

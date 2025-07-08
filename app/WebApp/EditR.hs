@@ -19,7 +19,7 @@ getEditR itemId = do
 
     item <- handleDB $ DB.getItem itemId
 
-    defaultWebAppLayout $
+    defaultWebAppLayout
         [whamlet|
             <form method="post" action=@{ModifyR itemId UpdateItem ManageR}>
                 <input type="hidden" name="shouldUpdateItemNotes" value="#{True}">

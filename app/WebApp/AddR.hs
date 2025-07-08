@@ -18,7 +18,7 @@ getAddR :: (HandlerFor WebApp) Html
 getAddR = do
     localiser <- localiseHandler
 
-    defaultWebAppLayout $
+    defaultWebAppLayout
         [whamlet|
             <form method="post" action=@{AddR}>
                 <div .mainAppHeader>

@@ -71,3 +71,6 @@
 - arguments: [-XQuasiQuotes]
 
 - ignore: {name: [Redundant <&>]}
+
+- group: {name: future, enabled: true}
+- group: {name: generalise-for-conciseness, enabled: true}
